@@ -60,7 +60,6 @@ on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
     exec /system/bin/sh /init.qcom.syspart_fixup.sh
-    start thermald
 
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
@@ -451,6 +450,7 @@ on property:sys.boot_completed=1
     chown system system /sys/devices/platform/rs300100a7.65536/sync_sts
     write /sys/devices/platform/msm_sdcc.3/idle_timeout 10
     start mpdecision
+    start thermald
 
 #service abld /system/bin/mm-abl-daemon
 #    class late_start
