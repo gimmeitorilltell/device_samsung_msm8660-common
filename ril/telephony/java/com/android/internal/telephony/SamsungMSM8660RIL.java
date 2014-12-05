@@ -390,7 +390,11 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
         switch (origResponse) {
             case RIL_UNSOL_RIL_CONNECTED:
                 ret = responseInts(p);
-                setRadioPower(false, null);
+                if (SystemProperties.get("ril.socket.reset").equals("1")) {
+                    setRadioPower(false, null);
+                }
+                // Trigger socket reset if RIL connect is called again
+                SystemProperties.set("ril.socket.reset", "1");
                 setPreferredNetworkType(mPreferredNetworkType, null);
                 setCdmaSubscriptionSource(mCdmaSubscription, null);
                 if(mRilVersion >= 8)
