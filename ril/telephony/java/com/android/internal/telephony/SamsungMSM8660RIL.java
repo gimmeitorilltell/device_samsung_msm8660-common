@@ -386,6 +386,38 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
         int origResponse = p.readInt();
         int newResponse = origResponse;
         switch (origResponse) {
+            case RIL_UNSOL_RIL_CONNECTED:
+                ret = responseInts(p);
+                if (SystemProperties.get("ril.socket.reset").equals("1")) {
+                    setRadioPower(false, null);
+                }
+                // Trigger socket reset if RIL connect is called again
+                SystemProperties.set("ril.socket.reset", "1");
+                setPreferredNetworkType(mPreferredNetworkType, null);
+                setCdmaSubscriptionSource(mCdmaSubscription, null);
+                if(mRilVersion >= 8)
+                    setCellInfoListRate(Integer.MAX_VALUE, null);
+                notifyRegistrantsRilConnectionChanged(((int[])ret)[0]);
+                break;
+            case RIL_UNSOL_NITZ_TIME_RECEIVED:
+                handleNitzTimeReceived(p);
+                break;
+            // SAMSUNG STATES
+            case 11010: // RIL_UNSOL_AM:
+                ret = responseString(p);
+                String amString = (String) ret;
+                Rlog.d(RILJ_LOG_TAG, "Executing AM: " + amString);
+
+                try {
+                    Runtime.getRuntime().exec("am " + amString);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Rlog.e(RILJ_LOG_TAG, "am " + amString + " could not be executed.");
+                }
+                break;
+            case 11021: // RIL_UNSOL_RESPONSE_HANDOVER:
+                ret = responseVoid(p);
+                break;
             case 1036:
                 newResponse = RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED;
                 break;
