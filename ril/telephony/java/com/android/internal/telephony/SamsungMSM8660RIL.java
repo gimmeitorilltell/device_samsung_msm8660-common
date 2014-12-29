@@ -463,6 +463,17 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
                response[3].equals("30")) {
                response[3] = "15";
            }
+
+        /* DANGER WILL ROBINSON
+         * In some cases from Vodaphone we are receiving a RAT of 102
+         * while in tunnels of the metro. Lets Assume that if we
+         * receive 102 we actually want a RAT of 2 for EDGE service */
+           if (response.length > 4 &&
+               response[0].equals("1") &&
+               response[3].equals("102")) {
+               response[3] = "2";
+           }
+
       }
       return responseVoiceDataRegistrationState(response);
    }
