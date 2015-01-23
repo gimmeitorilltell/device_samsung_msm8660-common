@@ -382,17 +382,14 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
     @Override
     protected void
     processUnsolicited (Parcel p) {
+        Object ret;
         int dataPosition = p.dataPosition();
         int origResponse = p.readInt();
         int newResponse = origResponse;
         switch (origResponse) {
             case RIL_UNSOL_RIL_CONNECTED:
                 ret = responseInts(p);
-                if (SystemProperties.get("ril.socket.reset").equals("1")) {
-                    setRadioPower(false, null);
-                }
-                // Trigger socket reset if RIL connect is called again
-                SystemProperties.set("ril.socket.reset", "1");
+                setRadioPower(false, null);
                 setPreferredNetworkType(mPreferredNetworkType, null);
                 setCdmaSubscriptionSource(mCdmaSubscription, null);
                 if(mRilVersion >= 8)
@@ -419,6 +416,20 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
                 ret = responseVoid(p);
                 break;
             case 1036:
+                ret = responseVoid(p);
+                break;
+            case 11017: // RIL_UNSOL_WB_AMR_STATE:
+                ret = responseInts(p);
+                setWbAmr(((int[])ret)[0]);
+                break;
+            // Remap
+            case 1039:
+                newResponse = RIL_UNSOL_ON_SS;
+                break;
+            case 11021: // RIL_UNSOL_RESPONSE_HANDOVER:
+                ret = responseVoid(p);
+                break;
+            case 1036:
                 newResponse = RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED;
                 break;
             case 1037: // RIL_UNSOL_TETHERED_MODE_STATE_CHANGED
@@ -429,15 +440,24 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
                 riljLog("SamsungMSM8660RIL: ignoring unsolicited response " +
                         origResponse);
                 return;
+            default:
+                // Rewind the Parcel
+                p.setDataPosition(dataPosition);
+
+                // Forward responses that we are not overriding to the super class
+                super.processUnsolicited(p);
+                return;
         }
+
         if (newResponse != origResponse) {
             riljLog("SamsungMSM8660RIL: remap unsolicited response from " +
                     origResponse + " to " + newResponse);
             p.setDataPosition(dataPosition);
             p.writeInt(newResponse);
+            p.setDataPosition(dataPosition);
+            super.processUnsolicited(p);
         }
-        p.setDataPosition(dataPosition);
-        super.processUnsolicited(p);
+
     }
 
     @Override
