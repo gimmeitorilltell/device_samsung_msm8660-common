@@ -688,4 +688,19 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
             result.sendToTarget();
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDataAllowed(boolean allowed, Message result) {
+        riljLog("setDataAllowed: not supported");
+
+        if (result != null) {
+            CommandException e = new CommandException(
+                CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(result, null, e);
+            result.sendToTarget();
+        }
+    }
 }
