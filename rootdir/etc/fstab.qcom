@@ -8,11 +8,8 @@
 /dev/block/mmcblk0p21                               /efs                ext4    nosuid,nodev,barrier=1                                                   wait
 /dev/block/mmcblk0p22                               /recovery           emmc    defaults                                                                 recoveryonly
 /dev/block/mmcblk0p24                               /system             ext4    ro,errors=panic                                                          wait
-/dev/block/mmcblk0p24                               /system             f2fs    ro,discard,nodiratime,inline_xattr,errors=panic                                                          wait
 /dev/block/mmcblk0p25                               /data               ext4    nosuid,nodev,noatime,noauto_da_alloc,errors=panic                        wait,check,encryptable=footer,length=-16384
-/dev/block/mmcblk0p25                               /data               f2fs    nosuid,nodev,noatime,discard,nodiratime,inline_xattr,inline_data,errors=panic                        wait,check,encryptable=footer,length=-16384
 /dev/block/mmcblk0p26                               /cache              ext4    nosuid,nodev,barrier=1                                                   wait,check
-/dev/block/mmcblk0p26                               /cache              f2fs    noatime,nosuid,nodev,discard,nodiratime,inline_xattr,inline_data                                                   wait,check
 
 /devices/platform/msm_sdcc.1/mmc_host/mmc0/mmc0*    auto                auto    defaults                                                                 voldmanaged=sdcard0:28,nonremovable,noemulatedsd
 /devices/platform/msm_sdcc.3/mmc_host/mmc2/mmc2*    auto                auto    defaults                                                                 voldmanaged=sdcard1:auto,noemulatedsd
