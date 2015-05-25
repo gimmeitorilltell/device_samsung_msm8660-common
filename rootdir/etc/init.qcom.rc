@@ -344,7 +344,7 @@ service wlandutservice /system/bin/wlandutservice
     oneshot
 # end of wifi
 
-service dhcpcd_wlan0 /system/bin/dhcpcd -aABDKL
+service dhcpcd_wlan0 /system/bin/dhcpcd -aABKL
     class main
     disabled
     oneshot
