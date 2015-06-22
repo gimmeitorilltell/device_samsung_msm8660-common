@@ -58,6 +58,9 @@ TARGET_NO_INITLOGO := true
 # External apps on SD
 TARGET_EXTERNAL_APPS = sdcard1
 
+# FM
+QCOM_FM_ENABLED := false
+
 # GPS
 BOARD_HAVE_NEW_QC_GPS := true
 TARGET_GPS_HAL_PATH := device/samsung/msm8660-common/gps
