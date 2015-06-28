@@ -422,8 +422,8 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
         Object ret = null;
         if (error == 0 || p.dataAvail() > 0) {
             switch (rr.mRequest) {
-                case RIL_REQUEST_VOICE_REGISTRATION_STATE: ret = responseVoiceDataRegistrationState(p); break;
-                case RIL_REQUEST_DATA_REGISTRATION_STATE: ret = responseVoiceDataRegistrationState(p); break;
+                case RIL_REQUEST_VOICE_REGISTRATION_STATE: ret = responseVoiceRegistrationState(p); break;
+                case RIL_REQUEST_DATA_REGISTRATION_STATE: ret = responseDataRegistrationState(p); break;
                 case RIL_REQUEST_OPERATOR: ret =  operatorCheck(p); break;
                 default:
                     throw new RuntimeException("Unrecognized solicited response: " + rr.mRequest);
@@ -451,8 +451,30 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
     }
 
     private Object
-    responseVoiceDataRegistrationState(Parcel p) {
-        String response[] = (String[])responseStrings(p);
+    responseDataRegistrationState(Parcel p) {
+      String response[] = (String[])responseStrings(p); // all data from parcell get popped
+      if (isGSM){
+        /*
+         * Our RIL reports a value of 30 for DC-HSPAP.
+         * However, this isn't supported in AOSP. So, map it to HSPAP instead
+        */
+           if (response.length > 4 &&
+               response[0].equals("1") &&
+               response[3].equals("30")) {
+               response[3] = "15";
+           }
+      }
+      return responseVoiceDataRegistrationState(response);
+   }
+
+   private Object
+   responseVoiceRegistrationState(Parcel p) {
+     String response[] = (String[])responseStrings(p); // all data from parcell get popped
+     return responseVoiceDataRegistrationState(response);
+   }
+
+   private Object
+   responseVoiceDataRegistrationState(String[] response) {
         if (isGSM){
             return response;
         }
