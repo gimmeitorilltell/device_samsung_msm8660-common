@@ -85,6 +85,10 @@ PRODUCT_PACKAGES += \
     lpm.rc \
     ueventd.qcom.rc
 
+# Recovery-Ramdisk
+PRODUCT_PACKAGES += \
+    twrp.fstab
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \

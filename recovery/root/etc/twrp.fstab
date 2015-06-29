@@ -1,0 +1,10 @@
+/boot		emmc		/dev/block/mmcblk0p8				flags=display="Boot";backup=1
+/cache		ext4		/dev/block/mmcblk0p26				flags=display="Cache";wipeingui;backup=1
+/data		ext4		/dev/block/mmcblk0p25				flags=display="Data";wipeingui;backup=1
+/efs		ext4		/dev/block/mmcblk0p21				flags=display="EFS";backup=1
+/recovery	emmc		/dev/block/mmcblk0p22				flags=display="Recovery";backup=1
+/system		ext4		/dev/block/mmcblk0p24				flags=display="System";wipeingui;backup=1
+
+/sdcard		vfat		/dev/block/mmcblk0p28				flags=display="Internal Storage";storage;wipeingui
+/external_sd	vfat		/dev/block/mmcblk1p1    /dev/block/mmcblk1	flags=display="External Storage";storage;wipeingui;removable
+/usb-otg 	vfat		/dev/block/sda1         /dev/block/sda		flags=display="USB OTG";storage;wipeingui;removable
