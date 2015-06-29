@@ -85,6 +85,10 @@ PRODUCT_PACKAGES += \
     lpm.rc \
     ueventd.qcom.rc
 
+# Recovery-Ramdisk
+PRODUCT_PACKAGES += \
+    twrp.fstab
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
@@ -214,10 +218,6 @@ PRODUCT_COPY_FILES += \
 # Doze
 PRODUCT_PACKAGES += \
     SamsungDoze
-
-# TWRP
-PRODUCT_COPY_FILES += \
-    device/samsung/msm8660-common/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab 
 
 #HW Hack
 PRODUCT_PROPERTY_OVERRIDES += \
