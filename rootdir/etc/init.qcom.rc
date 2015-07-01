@@ -28,6 +28,10 @@
 import init.target.rc
 import init.qcom.usb.rc
 
+on early-init
+    mkdir /firmware 0771 system system
+    mkdir /firmware-mdm 0771 system system
+
 on init
     # Set permissions for persist partition
     mkdir /persist 0771 system system
@@ -59,7 +63,6 @@ on init
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
-    exec /system/bin/sh /init.qcom.syspart_fixup.sh
 
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
