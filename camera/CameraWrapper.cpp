@@ -34,15 +34,12 @@
 #include <camera/Camera.h>
 #include <camera/CameraParameters.h>
 
-static bool needsPreviewRestart = false;
-
-const char KEY_VIDEO_HDR[] = "video-hdr";
-const char KEY_VIDEO_HDR_VALUES[] = "video-hdr-values";
+static bool previewRunning = false;
+static bool restartPreview = false;
+static bool wasVideo = false;
 
 static android::Mutex gCameraWrapperLock;
 static camera_module_t *gVendorModule = 0;
-
-static char *currentVideoSize = NULL;
 
 static int camera_device_open(const hw_module_t *module, const char *name,
                 hw_device_t **device);
@@ -60,7 +57,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
          .module_api_version = CAMERA_MODULE_API_VERSION_1_0,
          .hal_api_version = HARDWARE_HAL_API_VERSION,
          .id = CAMERA_HARDWARE_MODULE_ID,
-         .name = "msm8660 Camera Wrapper",
+         .name = "Samsung MSM8660 Camera Wrapper",
          .author = "The CyanogenMod Project",
          .methods = &camera_module_methods,
          .dso = NULL, /* remove compilation warnings */
@@ -95,7 +92,6 @@ static int check_vendor_module()
     if (gVendorModule)
         return 0;
 
-    // blob should be named /system/lib/hw/camera.vendor.msm8660.so
     rv = hw_get_module_by_class(CAMERA_HARDWARE_MODULE_ID, "vendor", (const hw_module_t**)&gVendorModule);
     if (rv)
         ALOGE("failed to open vendor camera module");
@@ -115,31 +111,13 @@ static char *camera_fixup_getparams(int id, const char *settings)
     /* Back Camera */
     if (id == 0) {
         // Set focus mode values (infinity is blurry so remove it)
-        //   old overlay: useInfinityFocus=false
-        //
-        // -- this is especially important for panormama mode since Camera2
-        //    always attempts to use infinity in panorama.
-        if (params.get(android::CameraParameters::KEY_SUPPORTED_FOCUS_MODES)) {
-            params.set(android::CameraParameters::KEY_SUPPORTED_FOCUS_MODES,
-                    "auto,macro,fixed,continuous-video,face-priority");
-        }
-
-        // Force 1280x720 preview size
-        params.remove(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO);
-        params.set(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO,
-                "1280x720");
+        params.set(android::CameraParameters::KEY_SUPPORTED_FOCUS_MODES, "auto,macro,fixed,continuous-video,face-priority");
     }
 
-    /* Front-Facing Camera */
-    if (id == 1) {
-        // Force 640x480 preview size
-        params.remove(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO);
-        params.set(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO,
-                "640x480");
-    }
+    // Force preferred preview size
+    params.set(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO, id ? "640x480" : "1280x720");
 
-    // Fix rottion mismatch
-    //   - without this pics/videos are upside down or completely corrupted
+    // Fix rotation mismatch
     params.set(android::CameraParameters::KEY_ROTATION, "0");
 
     ALOGV("%s: fixed parameters:", __FUNCTION__);
@@ -156,10 +134,6 @@ static char *camera_fixup_getparams(int id, const char *settings)
 static char *camera_fixup_setparams(int id, const char *settings, struct camera_device *device)
 {
     bool isVideo = false;
-    const char *previewSize = "0x0";
-    const char *videoSize = "0x0";
-    const char *sceneMode = "auto";
-    const char *videoHdr = "false";
 
     android::CameraParameters params;
     params.unflatten(android::String8(settings));
@@ -173,38 +147,10 @@ static char *camera_fixup_setparams(int id, const char *settings, struct camera_
         isVideo = !strcmp(params.get(android::CameraParameters::KEY_RECORDING_HINT), "true");
     }
 
-    if (params.get(android::CameraParameters::KEY_PREVIEW_SIZE)) {
-        previewSize = params.get(android::CameraParameters::KEY_PREVIEW_SIZE);
-    }
+    wasVideo = (isVideo || wasVideo);
 
-    if (params.get(android::CameraParameters::KEY_SCENE_MODE)) {
-        sceneMode = params.get(android::CameraParameters::KEY_SCENE_MODE);
-    }
-
-    if (params.get(android::CameraParameters::KEY_VIDEO_SIZE)) {
-        videoSize = params.get(android::CameraParameters::KEY_VIDEO_SIZE);
-    }
-
-    needsPreviewRestart = false;
-    if (isVideo) {
-        int previewEnabled = camera_preview_enabled(device);
-
-        // Detect if the preview needs to be restarted
-        if (previewEnabled &&
-            (currentVideoSize != NULL) &&
-            (strcmp(currentVideoSize, videoSize) != 0))
-        {
-            needsPreviewRestart = true;
-        }
-
-        // Save off the new video size
-        if (currentVideoSize != NULL)
-            free(currentVideoSize);
-        currentVideoSize = strdup(videoSize);
-    }
-
-    ALOGV("%s: isVideo=%d, previewSize=%s, sceneMode=%s\n",
-          __FUNCTION__, isVideo, previewSize, sceneMode);
+    if ((id == 0) && previewRunning && (isVideo || wasVideo))
+        restartPreview = true;
 
     ALOGV("%s: fixed parameters:", __FUNCTION__);
 #if !LOG_NDEBUG
@@ -288,13 +234,16 @@ static int camera_msg_type_enabled(struct camera_device *device,
 
 static int camera_start_preview(struct camera_device *device)
 {
+    int ret = 0;
     ALOGV("%s->%08X->%08X", __FUNCTION__, (uintptr_t)device,
             (uintptr_t)(((wrapper_camera_device_t*)device)->vendor));
 
     if (!device)
         return -EINVAL;
 
-    return VENDOR_CALL(device, start_preview);
+    ret = VENDOR_CALL(device, start_preview);
+    previewRunning = (ret == android::NO_ERROR);
+    return ret;
 }
 
 static void camera_stop_preview(struct camera_device *device)
@@ -305,6 +254,7 @@ static void camera_stop_preview(struct camera_device *device)
     if (!device)
         return;
 
+    previewRunning = false;
     VENDOR_CALL(device, stop_preview);
 }
 
@@ -339,6 +289,8 @@ static int camera_start_recording(struct camera_device *device)
     if (!device)
         return EINVAL;
 
+    wasVideo = false;
+
     return VENDOR_CALL(device, start_recording);
 }
 
@@ -351,6 +303,9 @@ static void camera_stop_recording(struct camera_device *device)
         return;
 
     VENDOR_CALL(device, stop_recording);
+    /* Restart preview after stop recording to flush buffers and not crash */
+    VENDOR_CALL(device, stop_preview);
+    VENDOR_CALL(device, start_preview);
 }
 
 static int camera_recording_enabled(struct camera_device *device)
@@ -437,13 +392,14 @@ static int camera_set_parameters(struct camera_device *device,
     __android_log_write(ANDROID_LOG_VERBOSE, LOG_TAG, tmp);
 #endif
 
+    if (restartPreview)
+        camera_stop_preview(device);
+
     int ret = VENDOR_CALL(device, set_parameters, tmp);
 
-    if (needsPreviewRestart) {
-        ALOGV("%s: restarting preview due to change in video-size\n", __FUNCTION__);
-        camera_stop_preview(device);
+    if (restartPreview) {
         camera_start_preview(device);
-        needsPreviewRestart = false;
+        restartPreview = false;
     }
 
     return ret;
@@ -589,6 +545,8 @@ static int camera_device_open(const hw_module_t *module, const char *name,
         }
         memset(camera_device, 0, sizeof(*camera_device));
         camera_device->id = cameraid;
+
+        wasVideo = false;
 
         rv = gVendorModule->common.methods->open(
                     (const hw_module_t*)gVendorModule, name,
