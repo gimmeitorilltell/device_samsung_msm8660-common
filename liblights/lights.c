@@ -28,6 +28,8 @@
 #include <sys/types.h>
 #include <hardware/lights.h>
 
+#define UNUSED __attribute__((unused))
+
 static pthread_once_t g_init = PTHREAD_ONCE_INIT;
 static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 static int g_notification_blink_support = 0;
@@ -157,8 +159,29 @@ static int set_light_notifications(struct light_device_t* dev,
        return res;
 }
 
-static int set_light_backlight(struct light_device_t *dev,
+static int set_light_backlight(UNUSED struct light_device_t *dev,
             struct light_state_t const *state)
+{
+    int err = 0;
+    int brightness = rgb_to_brightness(state);
+
+       pthread_mutex_lock(&g_lock);
+       if (g_notification_blink_support) {
+           if (g_notification_blink_rate_support) {
+               char buffer[10];
+               snprintf(buffer, sizeof(buffer), "%d %d", state->flashOnMS, state->flashOffMS);
+               res = write_str(NOTIFICATION_BLINK_RATE_FILE, buffer);
+           }
+           res = write_int(NOTIFICATION_BLINK_FILE, bln_led_control);
+       }
+       pthread_mutex_unlock(&g_lock);
+
+       return res;
+}
+
+static int
+set_light_buttons(UNUSED struct light_device_t* dev,
+        struct light_state_t const* state)
 {
         load_settings();
     int err = 0;
@@ -171,8 +194,9 @@ static int set_light_backlight(struct light_device_t *dev,
     return err;
 }
 
-static int set_light_keyboard(struct light_device_t *dev,
-            struct light_state_t const *state)
+static int
+set_light_keyboard(UNUSED struct light_device_t* dev,
+        struct light_state_t const* state)
 {
     return 0;
 }
