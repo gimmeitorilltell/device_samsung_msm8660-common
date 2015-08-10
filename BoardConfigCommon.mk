@@ -17,8 +17,6 @@
 
 # common kernel source
 TARGET_KERNEL_SOURCE := kernel/samsung/msm8660-common
-KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/arm/arm-candy-linux-gnueabi/bin
-KERNEL_TOOLCHAIN_PREFIX := arm-CANDY-linux-gnueabi-
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8660
@@ -165,19 +163,3 @@ WIFI_DRIVER_MODULE_AP_ARG   := "firmware_path=/system/etc/wifi/bcmdhd_apsta.bin 
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 28
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
-
-# ROM Optimization
-BONE_STOCK := false
-NO_DEBUG_FRAME_POINTERS := true
-NO_DEBUG_SYMBOL_FLAGS := true
-MAXIMUM_OVERDRIVE := true
-USE_GRAPHITE := true
-USE_FSTRICT_FLAGS := true
-USE_BINARY_FLAGS := true
-USE_EXTRA_CLANG_FLAGS := true
-ADDITIONAL_TARGET_ARM_OPT := true
-ADDITIONAL_TARGET_THUMB_OPT := true
-CANDY_ARM_OPT_LEVEL := -O3
-CANDY_THUMB_OPT_LEVEL := -O3
-FSTRICT_ALIASING_WARNING_LEVEL := 3
-USE_LTO := true
