@@ -159,6 +159,20 @@ WIFI_DRIVER_MODULE_NAME     := "dhd"
 WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/bcmdhd_sta.bin nvram_path=/system/etc/wifi/nvram_net.txt"
 WIFI_DRIVER_MODULE_AP_ARG   := "firmware_path=/system/etc/wifi/bcmdhd_apsta.bin nvram_path=/system/etc/wifi/nvram_net.txt"
 
+# ROM Optimization
+BONE_STOCK := false
+NO_DEBUG_FRAME_POINTERS := true
+NO_DEBUG_SYMBOL_FLAGS := true
+MAXIMUM_OVERDRIVE := true
+USE_GRAPHITE := true
+USE_FSTRICT_FLAGS := true
+USE_BINARY_FLAGS := true
+USE_EXTRA_CLANG_FLAGS := true
+ADDITIONAL_TARGET_ARM_OPT := true
+ADDITIONAL_TARGET_THUMB_OPT := true
+FSTRICT_ALIASING_WARNING_LEVEL := 3
+USE_LTO := true
+
 # Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 28
