@@ -105,7 +105,6 @@ BOARD_SEPOLICY_UNION += \
     bluetooth.te \
     bootanim.te \
     device.te \
-    domain.te \
     drmserver.te \
     file.te \
     file_contexts \
@@ -127,6 +126,7 @@ BOARD_SEPOLICY_UNION += \
     power_dev.te \
     property_contexts \
     qmuxd.te \
+    radio.te \
     recovery.te \
     rild.te \
     rmt_storage.te \
