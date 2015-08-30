@@ -111,6 +111,10 @@ PRODUCT_PACKAGES += \
     libgenlock \
     memtrack.msm8660
 
+# Doze
+PRODUCT_PACKAGES += \
+    SamsungDoze
+
 # ES File Explorer
 PRODUCT_COPY_FILES += \
     device/samsung/msm8660-common/es.apk:system/app/ES/es.apk
