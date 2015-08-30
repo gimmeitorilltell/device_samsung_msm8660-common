@@ -215,5 +215,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/samsung/msm8660-common/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab 
 
+#HW Hack
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.hwc.mdpcomp.enable=false
+
 # Common Qualcomm hardware
 $(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
