@@ -1,1 +1,2 @@
-allow radio graphics_device:chr_file { read write open };
+# radio
+allow radio system_app_data_file:file getattr;

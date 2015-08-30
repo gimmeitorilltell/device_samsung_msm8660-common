@@ -3,4 +3,3 @@ allow init keypad_dev:file { getattr relabelto };
 allow init labeledfs:filesystem associate;
 allow init su_exec:file execute_no_trans;
 allow init self:process execmem;
-allow init wpa_socket:unix_dgram_socket { bind create };
