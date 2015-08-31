@@ -1,2 +1,1 @@
-# radio
-allow radio system_app_data_file:file getattr;
+allow radio qmux_device:chr_file rw_file_perms;

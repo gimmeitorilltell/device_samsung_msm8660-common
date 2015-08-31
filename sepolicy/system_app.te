@@ -1,2 +1,3 @@
-allow system_app graphics_device:chr_file rw_file_perms;
+allow system_app keypad_dev:file rw_file_perms;
 allow system_app shell_data_file:dir search;
+allow system_app sysfs_calibration:dir search;

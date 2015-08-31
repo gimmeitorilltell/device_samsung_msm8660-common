@@ -1,2 +1,4 @@
-allow mediaserver camera_device:dir search;
-allow mediaserver camera_socket:sock_file write;
+allow mediaserver camera_device:dir r_dir_perms;
+allow mediaserver graphics_device:chr_file rw_file_perms;
+allow mediaserver oncrpc_device:dir r_dir_perms;
+allow mediaserver oncrpc_device:chr_file rw_file_perms;

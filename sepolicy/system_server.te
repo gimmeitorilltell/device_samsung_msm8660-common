@@ -1,8 +1,14 @@
-allow system_server display_sysfs:file rw_file_perms;
+allow system_server init:unix_dgram_socket sendto;
+
 allow system_server efs_file:dir search;
-allow system_server sensors_efs_file:file { read open };
+allow system_server gamma_dev:file rw_file_perms;
 allow system_server graphics_device:chr_file rw_file_perms;
+allow system_server firmware_file:dir { search };
+allow system_server firmware_file:file { open read getattr };
 allow system_server keypad_dev:file rw_file_perms;
+allow system_server oncrpc_device:dir r_dir_perms;
+allow system_server oncrpc_device:chr_file rw_file_perms;
 allow system_server panel_dev:file rw_file_perms;
 allow system_server power_dev:file rw_file_perms;
-allow system_server timerirq_dev:chr_file rw_file_perms;
+allow system_server sensors_data_file:file rw_file_perms;
+allow system_server uhid_device:chr_file rw_file_perms;
