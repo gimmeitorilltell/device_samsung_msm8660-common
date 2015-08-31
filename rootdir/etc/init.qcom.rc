@@ -67,6 +67,9 @@ on early-boot
     write /sys/module/subsystem_restart/parameters/enable_ramdumps 0
 
 on boot
+
+    restorecon_recursive /efs
+    
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
