@@ -60,6 +60,7 @@ import com.android.internal.telephony.uicc.IccCardStatus;
 public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
 
     private AudioManager mAudioManager;
+    private Message mPendingGetSimStatus;
 
     private Object mSMSLock = new Object();
     private boolean mIsSendingSMS = false;
@@ -295,6 +296,31 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
         }
 
         return response;
+    }
+
+    // Hack for Lollipop
+    // The system now queries for SIM status before radio on, resulting
+    // in getting an APPSTATE_DETECTED state. The RIL does not send an
+    // RIL_UNSOL_RESPONSE_SIM_STATUS_CHANGED message after the SIM is
+    // initialized, so delay the message until the radio is on.
+    @Override
+    public void
+    getIccCardStatus(Message result) {
+        if (mState != RadioState.RADIO_ON) {
+            mPendingGetSimStatus = result;
+        } else {
+            super.getIccCardStatus(result);
+        }
+    }
+
+    @Override
+    protected void switchToRadioState(RadioState newState) {
+        super.switchToRadioState(newState);
+
+        if (newState == RadioState.RADIO_ON && mPendingGetSimStatus != null) {
+            super.getIccCardStatus(mPendingGetSimStatus);
+            mPendingGetSimStatus = null;
+        }
     }
 
     @Override
@@ -681,34 +707,6 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
         if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
 
         send(rr);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void getCellInfoList(Message result) {
-        riljLog("getCellInfoList: not supported");
-        if (result != null) {
-            CommandException ex = new CommandException(
-                CommandException.Error.REQUEST_NOT_SUPPORTED);
-            AsyncResult.forMessage(result, null, ex);
-            result.sendToTarget();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setCellInfoListRate(int rateInMillis, Message response) {
-        riljLog("setCellInfoListRate: not supported");
-        if (response != null) {
-            CommandException ex = new CommandException(
-                CommandException.Error.REQUEST_NOT_SUPPORTED);
-            AsyncResult.forMessage(response, null, ex);
-            response.sendToTarget();
-        }
     }
 
     // This call causes ril to crash the socket, stopping further communication
