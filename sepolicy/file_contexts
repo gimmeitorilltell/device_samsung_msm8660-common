@@ -46,6 +46,7 @@
 /sys/devices/virtual/misc/sec_touchkey/brightness         u:object_r:keypad_dev:s0
 /sys/android_touch/sweep2wake                             u:object_r:keypad_dev:s0
 /sys/android_touch/sweep2wake_sensitive                   u:object_r:keypad_dev:s0
+/sys/class/misc/backlightnotification(/.*)?	          u:object_r:sysfs_bln:s0
 /sys/devices/virtual/lcd/panel/power_reduce               u:object_r:panel_dev:s0
 /sys/devices/virtual/misc/enhanced_bln/blink(.*)          u:object_r:keypad_dev:s0
 /sys/devices/virtual/misc/samoled_color/blue_(.*)         u:object_r:panel_dev:s0

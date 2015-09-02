@@ -1,4 +1,5 @@
 type efs_data_file, file_type, data_file_type;
 type gamma_dev, file_type;
+type sysfs_bln, fs_type, sysfs_type;
 type sysfs_calibration, sysfs_type, fs_type;
 type wifi_efs_file, file_type;
