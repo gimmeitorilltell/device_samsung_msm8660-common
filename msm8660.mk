@@ -211,6 +211,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 
+# Doze
+PRODUCT_PACKAGES += \
+    SamsungDoze
+
 # TWRP
 PRODUCT_COPY_FILES += \
     device/samsung/msm8660-common/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab 
