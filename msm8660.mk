@@ -217,7 +217,7 @@ PRODUCT_PACKAGES += \
 
 # TWRP
 PRODUCT_COPY_FILES += \
-    device/samsung/msm8660-common/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab 
+    device/samsung/msm8660-common/twrp.fstab:recovery/root/etc/twrp.fstab \
 
 #HW Hack
 PRODUCT_PROPERTY_OVERRIDES += \
