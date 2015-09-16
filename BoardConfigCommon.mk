@@ -23,7 +23,7 @@ TARGET_BOARD_PLATFORM := msm8660
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
 
 # Architecture
-TARGET_CPU_VARIANT := scorpion
+TARGET_CPU_VARIANT := cortex-a8
 
 # Audio
 BOARD_HAVE_SAMSUNG_AUDIO := true
