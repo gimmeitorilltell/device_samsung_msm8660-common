@@ -68,6 +68,7 @@ on early-boot
     
 on boot
     restorecon_recursive /efs
+    restorecon proc/bluetooth/sleep/btwrite
 
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
