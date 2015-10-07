@@ -23,3 +23,5 @@ allow secril-daemon app_data_file:file rw_file_perms;
 allow secril-daemon app_data_file:dir search;
 allow secril-daemon zygote_exec:file rx_file_perms;
 allow secril-daemon ashmem_device:chr_file x_file_perms;
+
+allow secril-daemon self:process execmem;
