@@ -27,6 +27,7 @@
 
 import init.target.rc
 import init.qcom.usb.rc
+import init.qcom.power.rc
 
 on init
     # Samsung symbols
@@ -415,38 +416,10 @@ on property:drmdiag.load=0
 #    class late_start
 #    oneshot
 
-on property:sys.boot_completed=1
-    write /sys/module/rpm_resources/enable_low_power/L2_cache 1
-    write /sys/module/rpm_resources/enable_low_power/pxo 1
-    write /sys/module/rpm_resources/enable_low_power/vdd_dig 2
-    write /sys/module/rpm_resources/enable_low_power/vdd_mem 2
-    write /sys/module/rpm_resources/enable_low_power/rpm_cpu 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/standalone_power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/standalone_power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/standalone_power_collapse/idle_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/standalone_power_collapse/idle_enabled 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq "384000"
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq "384000"
-    chown root system /sys/devices/system/cpu/mfreq
-    chmod 220 /sys/devices/system/cpu/mfreq
-    chown root system /sys/devices/system/cpu/cpu1/online
-    chmod 664 /sys/devices/system/cpu/cpu1/online
-    chown system system /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
-    chown system system /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
-    chown system system /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
-    chown system system /sys/devices/platform/rs300000a7.65536/force_sync
-    chown system system /sys/devices/platform/rs300000a7.65536/sync_sts
-    chown system system /sys/devices/platform/rs300100a7.65536/force_sync
-    chown system system /sys/devices/platform/rs300100a7.65536/sync_sts
-    write /sys/devices/platform/msm_sdcc.3/idle_timeout 10
-    write /sys/kernel/msm_mpdecision/conf/enabled 1
+service charger /charger
+    class charger
+    critical
+    seclabel u:r:healthd:s0
 
 #service abld /system/bin/mm-abl-daemon
 #    class late_start
