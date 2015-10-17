@@ -79,7 +79,7 @@ PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.efs.sync.sh \
     init.qcom.rc \
-    lpm.rc \
+    init.qcom.power.rc \
     ueventd.qcom.rc
 
 # Recovery-Ramdisk
