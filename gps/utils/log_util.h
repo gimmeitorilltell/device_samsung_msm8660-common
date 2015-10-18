@@ -73,7 +73,6 @@ extern void loc_logger_init(unsigned long debug, unsigned long timestamp);
 extern char* get_timestamp(char* str, unsigned long buf_size);
 
 
-#include <string.h>
 #include <utils/Log.h>
 
 #ifndef DEBUG_DMN_LOC_API
