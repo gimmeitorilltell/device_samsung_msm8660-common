@@ -337,10 +337,6 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
             case 1036:
                 ret = responseVoid(p);
                 break;
-            case 11017: // RIL_UNSOL_WB_AMR_STATE:
-                ret = responseInts(p);
-                setWbAmr(((int[])ret)[0]);
-                break;
             // Remap
             case 1039:
                 newResponse = RIL_UNSOL_ON_SS;
