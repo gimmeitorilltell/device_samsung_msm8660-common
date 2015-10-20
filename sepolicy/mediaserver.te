@@ -15,3 +15,5 @@ allow mediaserver camera_device:dir r_dir_perms;
 allow mediaserver graphics_device:chr_file rw_file_perms;
 allow mediaserver oncrpc_device:dir r_dir_perms;
 allow mediaserver oncrpc_device:chr_file rw_file_perms;
+
+allow mediaserver audio_data_file:dir remove_name;

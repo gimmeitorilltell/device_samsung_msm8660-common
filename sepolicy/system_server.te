@@ -19,3 +19,4 @@ allow system_server power_dev:file rw_file_perms;
 allow system_server sensors_data_file:file rw_file_perms;
 allow system_server timerirq_dev:chr_file rw_file_perms;
 allow system_server uhid_device:chr_file rw_file_perms;
+allow system_server wifi_efs_file:file { read write };
