@@ -1,4 +1,4 @@
-/* Copyright (c) 2011,2012 The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -9,7 +9,7 @@
  *       copyright notice, this list of conditions and the following
  *       disclaimer in the documentation and/or other materials provided
  *       with the distribution.
- *     * Neither the name of The Linux Foundation nor the names of its
+ *     * Neither the name of The Linux Foundation, nor the names of its
  *       contributors may be used to endorse or promote products derived
  *       from this software without specific prior written permission.
  *
@@ -72,19 +72,20 @@ enum loc_eng_msg_ids_t {
     LOC_ENG_MSG_REPORT_SV,
     LOC_ENG_MSG_REPORT_STATUS,
     LOC_ENG_MSG_REPORT_NMEA,
-    LOC_ENG_MSG_REQUEST_ATL,
-    LOC_ENG_MSG_RELEASE_ATL,
     LOC_ENG_MSG_REQUEST_BIT,
     LOC_ENG_MSG_RELEASE_BIT,
+    LOC_ENG_MSG_REQUEST_ATL,
+    LOC_ENG_MSG_RELEASE_ATL,
     LOC_ENG_MSG_REQUEST_WIFI,
     LOC_ENG_MSG_RELEASE_WIFI,
     LOC_ENG_MSG_REQUEST_NI,
     LOC_ENG_MSG_INFORM_NI_RESPONSE,
     LOC_ENG_MSG_REQUEST_XTRA_DATA,
     LOC_ENG_MSG_REQUEST_TIME,
-    LOC_ENG_MSG_EXT_POWER_CONFIG,
     LOC_ENG_MSG_REQUEST_POSITION,
+    LOC_ENG_MSG_EXT_POWER_CONFIG,
 
+#ifdef FEATURE_ULP
     // The following messages are added for ulp
     LOC_ENG_MSG_REQUEST_PHONE_CONTEXT,
     LOC_ENG_MSG_REQUEST_NETWORK_POSIITON,
@@ -120,20 +121,19 @@ enum loc_eng_msg_ids_t {
 
     // Last ULP MSG
     ULP_MSG_LAST = 0x700,
-
+#endif
     /* Message is sent by HAL to LOC API to configure LTE Positioning
        Profile in modem */
     LOC_ENG_MSG_LPP_CONFIG,
 
-    LOC_ENG_MSG_AGPS_MODE,
-    LOC_ENG_MSG_XTRA_ENABLE,
-    LOC_ENG_MSG_GLONASS_CONTROL,
-    LOC_ENG_MSG_USE_SSL,
-    LOC_ENG_MSG_CERT_TYPE,
-
+#ifdef FEATURE_ULP
     // Message is sent by Android framework (GpsLocationProvider)
     // to inject the raw command
     ULP_MSG_INJECT_RAW_COMMAND,
+#endif
+
+    /* Message is sent by HAL to LOC API to select A-GLONASS protocol */
+    LOC_ENG_MSG_A_GLONASS_PROTOCOL,
 };
 
 #ifdef __cplusplus

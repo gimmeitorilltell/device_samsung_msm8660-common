@@ -9,7 +9,7 @@
  *       copyright notice, this list of conditions and the following
  *       disclaimer in the documentation and/or other materials provided
  *       with the distribution.
- *     * Neither the name of The Linux Foundation nor the names of its
+ *     * Neither the name of The Linux Foundation, nor the names of its
  *       contributors may be used to endorse or promote products derived
  *       from this software without specific prior written permission.
  *
@@ -37,6 +37,10 @@
 #include "loc.h"
 #include <loc_eng_log.h>
 #include "loc_eng_msg_id.h"
+
+#ifndef SSID_BUF_SIZE
+    #define SSID_BUF_SIZE (32+1)
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -136,6 +140,7 @@ typedef enum {
 typedef enum {
   LOC_ENG_IF_REQUEST_SENDER_ID_QUIPC = 0,
   LOC_ENG_IF_REQUEST_SENDER_ID_MSAPM,
+  LOC_ENG_IF_REQUEST_SENDER_ID_MSAPU,
   LOC_ENG_IF_REQUEST_SENDER_ID_GPSONE_DAEMON,
   LOC_ENG_IF_REQUEST_SENDER_ID_MODEM,
   LOC_ENG_IF_REQUEST_SENDER_ID_UNKNOWN
@@ -155,6 +160,16 @@ struct loc_eng_msg {
         LOC_LOGV("deleting msg %s", loc_get_msg_name(msgid));
         LOC_LOGV("deleting msg ox%x", msgid);
     }
+};
+
+struct loc_eng_msg_a_glonass_protocol : public loc_eng_msg {
+    const unsigned long a_glonass_protocol;
+    inline loc_eng_msg_a_glonass_protocol(void* instance, unsigned long protocol) :
+        loc_eng_msg(instance, LOC_ENG_MSG_A_GLONASS_PROTOCOL),
+        a_glonass_protocol(protocol)
+        {
+            LOC_LOGV("A-GLONASS protocol: 0x%lx", protocol);
+        }
 };
 
 struct loc_eng_msg_suple_version : public loc_eng_msg {
@@ -355,20 +370,34 @@ struct loc_eng_msg_report_position : public loc_eng_msg {
         loc_eng_msg(instance, LOC_ENG_MSG_REPORT_POSITION),
         location(loc), locationExtended(locExtended), locationExt(locExt), status(st), technology_mask(LOC_POS_TECH_MASK_DEFAULT)
     {
+#ifdef FEATURE_ULP
         LOC_LOGV("flags: %d\n  source: %d\n  latitude: %f\n  longitude: %f\n  altitude: %f\n  speed: %f\n  bearing: %f\n  accuracy: %f\n  timestamp: %lld\n  rawDataSize: %d\n  rawData: %p\n  Session status: %d\n Technology mask: %u",
                  location.flags, location.position_source, location.latitude, location.longitude,
                  location.altitude, location.speed, location.bearing, location.accuracy,
                  location.timestamp, location.rawDataSize, location.rawData,status,technology_mask);
+#else
+        LOC_LOGV("flags: %d\n  latitude: %f\n  longitude: %f\n  altitude: %f\n  speed: %f\n  bearing: %f\n  accuracy: %f\n  timestamp: %lld\n  Session status: %d\n Technology mask: %u",
+                 location.flags, location.latitude, location.longitude,
+                 location.altitude, location.speed, location.bearing, location.accuracy,
+                 location.timestamp, status,technology_mask);
+#endif
     }
     inline loc_eng_msg_report_position(void* instance, GpsLocation &loc, GpsLocationExtended &locExtended, void* locExt,
                                        enum loc_sess_status st, LocPosTechMask technology) :
         loc_eng_msg(instance, LOC_ENG_MSG_REPORT_POSITION),
         location(loc), locationExtended(locExtended), locationExt(locExt), status(st), technology_mask(technology)
     {
+#ifdef FEATURE_ULP
         LOC_LOGV("flags: %d\n  source: %d\n  latitude: %f\n  longitude: %f\n  altitude: %f\n  speed: %f\n  bearing: %f\n  accuracy: %f\n  timestamp: %lld\n  rawDataSize: %d\n  rawData: %p\n  Session status: %d\n Technology mask: %u",
                  location.flags, location.position_source, location.latitude, location.longitude,
                  location.altitude, location.speed, location.bearing, location.accuracy,
                  location.timestamp, location.rawDataSize, location.rawData,status,technology_mask);
+#else
+        LOC_LOGV("flags: %d\n  latitude: %f\n  longitude: %f\n  altitude: %f\n  speed: %f\n  bearing: %f\n  accuracy: %f\n  timestamp: %lld\n  Session status: %d\n Technology mask: %u",
+                 location.flags, location.latitude, location.longitude,
+                 location.altitude, location.speed, location.bearing, location.accuracy,
+                 location.timestamp, status,technology_mask);
+#endif
     }
 };
 
@@ -554,7 +583,6 @@ struct loc_eng_msg_release_wifi : public loc_eng_msg {
     }
 };
 
-
 struct loc_eng_msg_request_atl : public loc_eng_msg {
     const int handle;
     const AGpsType type;
@@ -692,16 +720,17 @@ struct loc_eng_msg_inject_xtra_data : public loc_eng_msg {
     }
 };
 
+#ifdef FEATURE_IPV6
 struct loc_eng_msg_atl_open_success : public loc_eng_msg {
     const AGpsStatusValue agpsType;
     const int length;
     char* const apn;
-    const AGpsBearerType bearerType;
+    const ApnIpType bearerType;
     inline loc_eng_msg_atl_open_success(void* instance,
                                         AGpsStatusValue atype,
                                         const char* name,
                                         int len,
-                                        AGpsBearerType btype) :
+                                        ApnIpType btype) :
         loc_eng_msg(instance, LOC_ENG_MSG_ATL_OPEN_SUCCESS),
         agpsType(atype), length(len),
         apn(new char[len+1]), bearerType(btype)
@@ -718,7 +747,30 @@ struct loc_eng_msg_atl_open_success : public loc_eng_msg {
         delete[] apn;
     }
 };
+#else
+struct loc_eng_msg_atl_open_success : public loc_eng_msg {
+    const int length;
+    char* const apn;
+    inline loc_eng_msg_atl_open_success(void* instance,
+                                        const char* name,
+                                        int len) :
+        loc_eng_msg(instance, LOC_ENG_MSG_ATL_OPEN_SUCCESS),
+        length(len),
+        apn(new char[len+1])
+    {
+        memcpy((void*)apn, (void*)name, len);
+        apn[len] = 0;
+        LOC_LOGV("apn: %s\n",
+                 apn);
+    }
+    inline ~loc_eng_msg_atl_open_success()
+    {
+        delete[] apn;
+    }
+};
+#endif
 
+#ifdef FEATURE_IPV6
 struct loc_eng_msg_atl_open_failed : public loc_eng_msg {
     const AGpsStatusValue agpsType;
     inline loc_eng_msg_atl_open_failed(void* instance,
@@ -730,7 +782,17 @@ struct loc_eng_msg_atl_open_failed : public loc_eng_msg {
                  loc_get_agps_type_name(agpsType));
     }
 };
+#else
+struct loc_eng_msg_atl_open_failed : public loc_eng_msg {
+    inline loc_eng_msg_atl_open_failed(void* instance) :
+        loc_eng_msg(instance, LOC_ENG_MSG_ATL_OPEN_FAILED)
+    {
+        LOC_LOGV("");
+    }
+};
+#endif
 
+#ifdef FEATURE_IPV6
 struct loc_eng_msg_atl_closed : public loc_eng_msg {
     const AGpsStatusValue agpsType;
     inline loc_eng_msg_atl_closed(void* instance,
@@ -742,6 +804,15 @@ struct loc_eng_msg_atl_closed : public loc_eng_msg {
                  loc_get_agps_type_name(agpsType));
     }
 };
+#else
+struct loc_eng_msg_atl_closed : public loc_eng_msg {
+    inline loc_eng_msg_atl_closed(void* instance) :
+        loc_eng_msg(instance, LOC_ENG_MSG_ATL_CLOSED)
+    {
+        LOC_LOGV("");
+    }
+};
+#endif
 
 struct loc_eng_msg_set_data_enable : public loc_eng_msg {
     const int enable;
@@ -764,6 +835,7 @@ struct loc_eng_msg_set_data_enable : public loc_eng_msg {
     }
 };
 
+#ifdef FEATURE_ULP
 struct loc_eng_msg_request_network_position : public loc_eng_msg {
     const UlpNetworkRequestPos networkPosRequest;
     inline loc_eng_msg_request_network_position (void* instance, UlpNetworkRequestPos networkPosReq) :
@@ -875,6 +947,7 @@ struct ulp_msg_report_quipc_position : public loc_eng_msg {
                  quipc_error_code);
     }
 };
+#endif
 
 void loc_eng_msg_sender(void* loc_eng_data_p, void* msg);
 int loc_eng_msgget(int * p_req_msgq);
