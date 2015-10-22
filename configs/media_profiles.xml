@@ -17,7 +17,6 @@
                          AudioEncoderCap+,
                          VideoDecoderCap,
                          AudioDecoderCap,
-                         VideoEditorCap,
                          ExportVideoProfile)>
   <!ELEMENT CamcorderProfiles (EncoderProfile+, ImageEncoding+, ImageDecoding, Camera)>
   <!ELEMENT EncoderProfile (Video, Audio)>
@@ -435,11 +434,5 @@
 
   <VideoDecoderCap name="wmv" enabled="true"/>
   <AudioDecoderCap name="wma" enabled="true"/>
-
-  <VideoEditorCap maxInputFrameWidth="1280" maxInputFrameHeight="720" maxOutputFrameWidth="1280" maxOutputFrameHeight="720" maxPrefetchYUVFrames="3" />
-
-  <ExportVideoProfile name="h263" profile="1" level="1"/>
-  <ExportVideoProfile name="h264" profile="1" level="1"/>
-  <ExportVideoProfile name="m4v" profile="1" level="1"/>
 
 </MediaSettings>
