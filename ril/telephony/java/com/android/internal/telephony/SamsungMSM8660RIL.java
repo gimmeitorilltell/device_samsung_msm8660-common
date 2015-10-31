@@ -65,7 +65,7 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
     private boolean mIsSendingSMS = false;
     protected boolean isGSM = false;
     public static final long SEND_SMS_TIMEOUT_IN_MS = 30000;
-    private boolean samsungEmergency = needsOldRilFeature("samsungEMSReq");
+    private static final int RIL_REQUEST_DIAL_EMERGENCY = 10001;
 
     public SamsungMSM8660RIL(Context context, int preferredNetworkType,
             int cdmaSubscription, Integer instanceId) {
@@ -591,7 +591,7 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
     @Override
     public void
     dial(String address, int clirMode, UUSInfo uusInfo, Message result) {
-        if (samsungEmergency && PhoneNumberUtils.isEmergencyNumber(address)) {
+        if (PhoneNumberUtils.isEmergencyNumber(address)) {
             dialEmergencyCall(address, clirMode, result);
             return;
         }
@@ -663,7 +663,6 @@ public class SamsungMSM8660RIL extends RIL implements CommandsInterface {
         }
     }
 
-    static final int RIL_REQUEST_DIAL_EMERGENCY = 10016;
    private void
     dialEmergencyCall(String address, int clirMode, Message result) {
         RILRequest rr;
