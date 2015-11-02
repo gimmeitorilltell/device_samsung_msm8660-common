@@ -13,7 +13,6 @@ unix_socket_connect(secril-daemon, rild, rild)
 allow secril-daemon { efs_file }:file rw_file_perms;
 allow secril-daemon efs_file:dir search;
 allow secril-daemon system_data_file:dir { write create_dir_perms };
-allow secril-daemon system_data_file:file unlink;
 allow secril-daemon radio_data_file:dir { search write };
 allow secril-daemon radio_data_file:file { create_file_perms };
 allow secril-daemon kernel:system module_request;

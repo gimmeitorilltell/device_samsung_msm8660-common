@@ -24,9 +24,6 @@
 # Input
 /dev/tspdrv                                               u:object_r:input_device:s0
 
-# Blocks
-/dev/block/mmcblk0(.*)                                    u:object_r:mmc_block_device:s0
-
 # Sensors
 /dev/akm8975                                              u:object_r:sensors_device:s0
 /sys/devices/virtual/sec/gsensorcal/calibration           u:object_r:sysfs_calibration:s0
