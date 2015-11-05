@@ -1,30 +1,59 @@
+# Audio
+/dev/audience_a2220                                       u:object_r:audio_device:s0
+
 # GPU device
-/dev/kgsl-2d0                  u:object_r:gpu_device:s0
-/dev/kgsl-2d1                  u:object_r:gpu_device:s0
-/dev/msm_rotator               u:object_r:gpu_device:s0
-/dev/smd([0-9])+               u:object_r:smd_device:s0
-/dev/mdm                       u:object_r:radio_device:s0
+/dev/kgsl-2d(.*)                                          u:object_r:gpu_device:s0
+/dev/gemini0                                              u:object_r:camera_device:s0
+/dev/msm_camera(/.*)?                                     u:object_r:camera_device:s0
+/dev/msm_rotator                                          u:object_r:gpu_device:s0
 
-/system/bin/macloader		u:object_r:macloader_exec:s0
-/system/bin/orientationd	u:object_r:orientationd_exec:s0
+# Wireless
+/dev/rfkill                                               u:object_r:rfkill_device:s0
 
-# Qualcomm MSM Audio ACDB device
-/dev/msm_acdb       u:object_r:msm_acdb_device:s0
+# Modem
+/dev/mdm                                                  u:object_r:mdm_device:s0
+/dev/rmnet_mux_ctrl                                       u:object_r:qmux_device:s0
+/dev/rmt_storage                                          u:object_r:rmt_device:s0
+/dev/sdioctl[0-9]*                                        u:object_r:qmux_device:s0
+/dev/tty_sdio_00                                          u:object_r:mdm_device:s0
+/dev/ttyHSL1                                              u:object_r:mdm_device:s0
 
-/dev/timerirq			u:object_r:timerirq_dev:s0
-/dev/kgsl-2d(.*)		u:object_r:graphics_device:s0
-/dev/block/mmcblk0(.*)		u:object_r:mmc_block_device:s0
-/dev/audience_a2220		u:object_r:audio_device:s0
+# GPS
+/dev/oncrpc(/.*)?                                         u:object_r:oncrpc_device:s0
 
-/data/cam_socket(.*)		u:object_r:camera_socket:s0
-/data/system/default_values	u:object_r:mpctl_data_file:s0
+# Input
+/dev/tspdrv                                               u:object_r:input_device:s0
 
-/sys/class/misc/backlightnotification(/.*)?	u:object_r:sysfs_bln:s0
-/sys/class/misc/gammacontrol/tuner	u:object_r:gamma_dev:s0
+# Blocks
+/dev/block/mmcblk0(.*)                                    u:object_r:mmc_block_device:s0
 
-/sys/devices/virtual/sec/sec_touchkey/keypad_enable	u:object_r:keypad_dev:s0
-/sys/devices/virtual/timed_output/vibrator/pwm_value	u:object_r:power_dev:s0
-/sys/devices/platform/mipi_samsung_oled.513/lcd/panel/power_reduce	u:object_r:panel_dev:s0
+# Sensors
+/dev/akm8975                                              u:object_r:sensors_device:s0
+/sys/devices/virtual/sec/gsensorcal/calibration           u:object_r:sysfs_calibration:s0
 
-/system/bin/qcks                   u:object_r:mdm_helper_exec:s0
-/system/bin/efsks                  u:object_r:mdm_helper_exec:s0
+# System
+/data/qcks(/.*)?                                          u:object_r:efs_data_file:s0
+/data/misc/akmd_set.txt                                   u:object_r:sensors_data_file:s0
+/efs/wifi/.mac.info                                       u:object_r:wifi_efs_file:s0
+/system/bin/sec-ril                                       u:object_r:secril-daemon_exec:s0
+/system/bin/qcks                                          u:object_r:mdm_helper_exec:s0
+/system/bin/qmiproxy                                      u:object_r:qmuxd_exec:s0
+/system/bin/thermald                                      u:object_r:thermal-engine_exec:s0
+/system/etc/firmware(/.*)?                                u:object_r:firmware_file:s0
+
+# CMHW
+/data/.disable_touchlight                                 u:object_r:keypad_dev:s0
+/sys/devices/virtual/misc/sec_touchkey/brightness         u:object_r:keypad_dev:s0
+/sys/android_touch/sweep2wake                             u:object_r:keypad_dev:s0
+/sys/android_touch/sweep2wake_sensitive                   u:object_r:keypad_dev:s0
+/sys/class/misc/backlightnotification(/.*)?	          u:object_r:sysfs_bln:s0
+/sys/devices/virtual/lcd/panel/power_reduce               u:object_r:panel_dev:s0
+/sys/devices/virtual/misc/enhanced_bln/blink(.*)          u:object_r:keypad_dev:s0
+/sys/devices/virtual/misc/samoled_color/blue_(.*)         u:object_r:panel_dev:s0
+/sys/devices/virtual/misc/samoled_color/green_(.*)        u:object_r:panel_dev:s0
+/sys/devices/virtual/misc/samoled_color/red_(.*)          u:object_r:panel_dev:s0
+/sys/devices/virtual/sec/sec_touchkey/keypad_enable       u:object_r:keypad_dev:s0
+/sys/devices/virtual/timed_output/vibrator/pwm_value      u:object_r:power_dev:s0
+
+# Bluetooth
+/proc/bluetooth/sleep/btwrite               u:object_r:bt_hc_worker_proc:s0

@@ -1,1 +1,6 @@
+type qmux_device, dev_type;
+allow qmuxd init:unix_stream_socket connectto;
+allow qmuxd property_socket:sock_file write;
+allow qmuxd qmux_device:chr_file rw_file_perms;
+allow qmuxd radio_prop:property_service set;
 allow qmuxd self:process execmem;

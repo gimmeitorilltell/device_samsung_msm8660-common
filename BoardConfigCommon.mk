@@ -97,7 +97,7 @@ TARGET_RECOVERY_DEVICE_DIRS := device/samsung/msm8660-common
 BOARD_RIL_CLASS := ../../../device/samsung/msm8660-common/ril
 
 # SELinux
-include device/qcom/sepolicy/sepolicy.mk
+#include device/qcom/sepolicy/sepolicy.mk
 
 BOARD_SEPOLICY_DIRS += \
     device/samsung/msm8660-common/sepolicy

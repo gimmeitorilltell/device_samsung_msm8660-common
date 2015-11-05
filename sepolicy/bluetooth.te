@@ -1,3 +1,7 @@
-allow bluetooth proc_bthc:dir search;
-allow bluetooth proc_bthc:file w_file_perms;
-allow bluetooth smd_device:chr_file rw_file_perms;
+allow bluetooth sysfs:file write;
+allow bluetooth bluetooth_efs_file:dir search;
+allow bluetooth bluetooth_efs_file:file { read open write };
+allow bluetooth bt_hc_worker_proc:file { read write };
+
+type_transition bluetooth bt_hc_worker_proc:file proc;
+type_transition bluetooth bluetooth_efs_file:file efs_file;
