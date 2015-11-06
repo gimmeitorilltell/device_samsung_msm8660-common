@@ -83,7 +83,7 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 TARGET_NO_ADAPTIVE_PLAYBACK := true
 
 # Power
-TARGET_USES_CM_POWERHAL := true
+TARGET_POWERHAL_VARIANT := qcom
 
 # Qualcomm support
 COMMON_GLOBAL_CFLAGS += -DQCOM_BSP
@@ -97,7 +97,7 @@ TARGET_RECOVERY_DEVICE_DIRS := device/samsung/msm8660-common
 BOARD_RIL_CLASS := ../../../device/samsung/msm8660-common/ril
 
 # SELinux
-#include device/qcom/sepolicy/sepolicy.mk
+include device/qcom/sepolicy/sepolicy.mk
 
 BOARD_SEPOLICY_DIRS += \
     device/samsung/msm8660-common/sepolicy
