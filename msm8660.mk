@@ -195,9 +195,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     power.msm8660
 
-# Torch
+# Stlport
 PRODUCT_PACKAGES += \
-    Torch
+    libstlport
 
 # USB
 PRODUCT_PACKAGES += \
