@@ -1,0 +1,2 @@
+# Grant DRM Service access to Qualcomm Secure Execution Environment Communicator (QSEECOM) device
+allow drmserver sdcard_external:file open;
