@@ -1,4 +1,2 @@
 allow rild proc_net:file write;
-allow rild self:process execmem;
-allow rild diag_device:chr_file rw_file_perms;
 allow rild radio_data_file:dir { setattr };

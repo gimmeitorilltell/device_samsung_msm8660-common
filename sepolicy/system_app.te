@@ -1,7 +1,6 @@
 # Grant GPU access to system apps (e.g., PowerManagerService)
 allow system_app gpu_device:chr_file rw_file_perms;
 
-allow system_app diag_device:chr_file rw_file_perms;
 allow system_app wpa_socket:unix_dgram_socket sendto;
 
 allow system_app graphics_device:chr_file rw_file_perms;
