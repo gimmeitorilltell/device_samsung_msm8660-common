@@ -5,9 +5,3 @@ init_daemon_domain(thermald)
 allow thermald self:capability { net_admin chown fsetid dac_override };
 allow thermald self:netlink_kobject_uevent_socket { read bind create setopt };
 allow thermald self:process execmem;
-allow thermald socket_device:dir { write add_name };
-allow thermald socket_device:sock_file { create setattr };
-allow thermald sysfs:file rw_file_perms;
-allow thermald sysfs_mpdecision:file rw_file_perms;
-allow thermald sysfs_thermal:dir r_dir_perms;
-allow thermald sysfs_thermal:file rw_file_perms;

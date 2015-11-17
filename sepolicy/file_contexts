@@ -2,7 +2,6 @@
 /dev/kgsl-2d0                  u:object_r:gpu_device:s0
 /dev/kgsl-2d1                  u:object_r:gpu_device:s0
 /dev/msm_rotator               u:object_r:gpu_device:s0
-/dev/smd([0-9])+               u:object_r:smd_device:s0
 /dev/mdm                       u:object_r:radio_device:s0
 
 /system/bin/macloader		u:object_r:macloader_exec:s0
@@ -13,11 +12,7 @@
 
 /dev/timerirq			u:object_r:timerirq_dev:s0
 /dev/kgsl-2d(.*)		u:object_r:graphics_device:s0
-/dev/block/mmcblk0(.*)		u:object_r:mmc_block_device:s0
 /dev/audience_a2220		u:object_r:audio_device:s0
-
-/data/cam_socket(.*)		u:object_r:camera_socket:s0
-/data/system/default_values	u:object_r:mpctl_data_file:s0
 
 /sys/class/misc/backlightnotification(/.*)?	u:object_r:sysfs_bln:s0
 /sys/class/misc/gammacontrol/tuner	u:object_r:gamma_dev:s0
@@ -25,6 +20,3 @@
 /sys/devices/virtual/sec/sec_touchkey/keypad_enable	u:object_r:keypad_dev:s0
 /sys/devices/virtual/timed_output/vibrator/pwm_value	u:object_r:power_dev:s0
 /sys/devices/platform/mipi_samsung_oled.513/lcd/panel/power_reduce	u:object_r:panel_dev:s0
-
-/system/bin/qcks                   u:object_r:mdm_helper_exec:s0
-/system/bin/efsks                  u:object_r:mdm_helper_exec:s0
