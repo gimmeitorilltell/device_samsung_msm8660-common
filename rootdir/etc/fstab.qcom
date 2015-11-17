@@ -15,7 +15,7 @@
 
 # SD Cards
 /devices/platform/msm_sdcc.1/mmc_host/mmc0/mmc0*    auto                auto    defaults                                                                 voldmanaged=sdcard0:28,nonremovable,noemulatedsd
-/devices/platform/msm_sdcc.3/mmc_host/mmc2/mmc2*    auto                auto    defaults                                                                 voldmanaged=sdcard1:auto,noemulatedsd
+/devices/platform/msm_sdcc.3/mmc_host/mmc2/mmc2*    auto                auto    defaults                                                                 voldmanaged=sdcard1:auto,encryptable=userdata
 
 # USB OTG
 /devices/platform/msm_hsusb_host.0*                 auto                auto    defaults                                                                 voldmanaged=usbdisk:auto
