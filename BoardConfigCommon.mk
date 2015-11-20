@@ -17,8 +17,6 @@
 
 # common kernel source
 TARGET_KERNEL_SOURCE := kernel/samsung/msm8660-common
-KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/arm/arm-candy-linux-gnueabi/bin
-KERNEL_TOOLCHAIN_PREFIX := arm-CANDY-linux-gnueabi-
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8660
