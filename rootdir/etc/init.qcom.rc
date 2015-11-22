@@ -46,6 +46,9 @@ on early-boot
     exec /system/bin/sh /init.qcom.syspart_fixup.sh
 
 on boot
+    restorecon_recursive /efs
+#    restorecon proc/bluetooth/sleep/btwrite
+
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
@@ -460,12 +463,3 @@ on property:persist.ims.regmanager.mode=1
 on property:ro.data.large_tcp_window_size=true
     # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
     write /proc/sys/net/ipv4/tcp_adv_win_scale  1
-
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk /storage/usbdisk
-    class late_start
-    disabled
-
-service charger /charger
-    class charger
-    critical
-    seclabel u:r:healthd:s0
