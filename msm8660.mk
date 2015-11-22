@@ -78,10 +78,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.efs.sync.sh \
-    init.qcom.mdm_links.sh \
-    init.qcom.modem_links.sh \
     init.qcom.rc \
-    init.qcom.syspart_fixup.sh \
     lpm.rc \
     ueventd.qcom.rc
 
