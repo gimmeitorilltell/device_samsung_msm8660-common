@@ -103,7 +103,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Compatibility symbols wrappers
 PRODUCT_PACKAGES += \
-    libboringssl-compat \
     libsamsung_symbols
 
 # Display
