@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 The CyanogenMod Project
+ * Copyright (C) 2012-2015 The CyanogenMod Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,11 +50,7 @@ import com.android.internal.telephony.uicc.IccCardApplicationStatus;
 import com.android.internal.telephony.uicc.IccCardStatus;
 
 /**
- * Qualcomm RIL for the Samsung family.
- * Quad core Exynos4 with Qualcomm modem and later is supported
- * Snapdragon S3 and later is supported
- * This RIL is univerisal meaning it supports CDMA and GSM radio.
- * Handles most GSM and CDMA cases.
+ * Qualcomm RIL for the Samsung MSM8660 family.
  * {@hide}
  */
 public class SamsungMSM8660RIL extends RIL implements CommandsInterface {

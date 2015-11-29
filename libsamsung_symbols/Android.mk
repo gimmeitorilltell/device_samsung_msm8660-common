@@ -17,7 +17,6 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
     MemoryBase.cpp \
-    samsung_ril.cpp \
     VectorImpl.cpp
 
 LOCAL_SHARED_LIBRARIES := libbinder
