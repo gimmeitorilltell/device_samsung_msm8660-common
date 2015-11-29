@@ -30,8 +30,7 @@ import init.qcom.usb.rc
 import init.qcom.power.rc
 
 on init
-    # Samsung symbols
-    export LD_PRELOAD "/system/lib/libboringssl-compat.so /system/lib/libsamsung_symbols.so"
+    export LD_SHIM_LIBS /system/lib/libutils.so|libsamsung_symbols.so
 
     # Set permissions for persist partition
     mkdir /persist 0771 system system
