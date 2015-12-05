@@ -48,6 +48,8 @@ on early-boot
     setrlimit 8 67108864 67108864
     exec /system/bin/sh /init.qcom.syspart_fixup.sh
 
+    setprop persist.sys.ssr.restart_level 3
+ 
 on boot
     restorecon_recursive /efs
 #    restorecon proc/bluetooth/sleep/btwrite
@@ -71,13 +73,13 @@ on boot
     # bluetooth MAC address programming
     setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
     chown bluetooth bluetooth ro.bt.bdaddr_path
-
     # bluetooth LPM
     chmod 0220 /proc/bluetooth/sleep/lpm
     chmod 0220 /proc/bluetooth/sleep/btwrite
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/lpm
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
 
+    # Create QMUX deamon socket area
     mkdir /dev/socket/qmux_radio 0770 radio radio
     chmod 2770 /dev/socket/qmux_radio
     mkdir /dev/socket/qmux_audio 0770 media audio
@@ -87,7 +89,7 @@ on boot
     mkdir /dev/socket/qmux_gps 0770 gps gps
     chmod 2770 /dev/socket/qmux_gps
 
-    # TelephonyManager.java requires this
+    # RIL/TelephonyManager.java requires this
     chmod 0644 /proc/cmdline
 
     # Enable Bluetooth 802.11 PAL when Bluetooth is turned on
@@ -165,7 +167,7 @@ on boot
 # msm specific files that need to be created on /data
 on post-fs-data
 
-#    mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
+    mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
 
     # Create the directories used by the Wireless subsystem
     mkdir /data/misc/wifi 0770 wifi wifi
@@ -414,7 +416,6 @@ on property:drmdiag.load=0
 service charger /charger
     class charger
     critical
-    seclabel u:r:healthd:s0
 
 #service abld /system/bin/mm-abl-daemon
 #    class late_start
