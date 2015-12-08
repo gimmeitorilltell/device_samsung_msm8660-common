@@ -117,10 +117,6 @@ PRODUCT_PACKAGES += \
     libgenlock \
     memtrack.msm8660
 
-# ES File Explorer
-PRODUCT_COPY_FILES += \
-    device/samsung/msm8660-common/es.apk:system/app/ES/es.apk
-
 # GalaxyS2Settings
 PRODUCT_PACKAGES += \
     GalaxyS2Settings \
