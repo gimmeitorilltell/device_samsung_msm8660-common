@@ -9,7 +9,7 @@
  *       copyright notice, this list of conditions and the following
  *       disclaimer in the documentation and/or other materials provided
  *       with the distribution.
- *     * Neither the name of The Linux Foundation, nor the names of its
+ *     * Neither the name of The Linux Foundation nor the names of its
  *       contributors may be used to endorse or promote products derived
  *       from this software without specific prior written permission.
  *
@@ -89,9 +89,7 @@ struct LocEng {
     const gps_acquire_wakelock acquireWakelock;
     const gps_release_wakelock releaseWakeLock;
     const loc_msg_sender       sendMsge;
-#ifdef FEATURE_ULP
     const loc_msg_sender       sendUlpMsg;
-#endif
     const loc_ext_parser       extPosInfo;
     const loc_ext_parser       extSvInfo;
 
@@ -100,9 +98,7 @@ struct LocEng {
            gps_acquire_wakelock acqwl,
            gps_release_wakelock relwl,
            loc_msg_sender msgSender,
-#ifdef FEATURE_ULP
            loc_msg_sender msgUlpSender,
-#endif
            loc_ext_parser posParser,
            loc_ext_parser svParser);
 };
@@ -175,15 +171,9 @@ public:
     inline virtual enum loc_api_adapter_err
         setXtraData(char* data, int length)
     {LOC_LOGW("%s: default implementation invoked", __func__); return LOC_API_ADAPTER_ERR_SUCCESS;}
-#ifdef FEATURE_IPV6
     inline virtual enum loc_api_adapter_err
-        atlOpenStatus(int handle, int is_succ, char* apn, ApnIpType bear, AGpsType agpsType)
+        atlOpenStatus(int handle, int is_succ, char* apn, AGpsBearerType bear, AGpsType agpsType)
     {LOC_LOGW("%s: default implementation invoked", __func__); return LOC_API_ADAPTER_ERR_SUCCESS;}
-#else
-    inline virtual enum loc_api_adapter_err
-        atlOpenStatus(int handle, int is_succ, char* apn, AGpsType agpsType)
-    {LOC_LOGW("%s: default implementation invoked", __func__); return LOC_API_ADAPTER_ERR_SUCCESS;}
-#endif
     inline virtual enum loc_api_adapter_err
         atlCloseStatus(int handle, int is_succ)
     {LOC_LOGW("%s: default implementation invoked", __func__); return LOC_API_ADAPTER_ERR_SUCCESS;}
@@ -226,9 +216,6 @@ public:
     inline virtual enum loc_api_adapter_err
         setExtPowerConfig(int isBatteryCharging)
     {LOC_LOGW("%s: default implementation invoked", __func__); return LOC_API_ADAPTER_ERR_SUCCESS;}
-    inline virtual enum loc_api_adapter_err
-        setAGLONASSProtocol(unsigned long aGlonassProtocol)
-    {LOC_LOGW("%s: default implementation invoked", __func__); return LOC_API_ADAPTER_ERR_SUCCESS;}
 
     inline const LocPosMode& getPositionMode() const {return fixCriteria;}
 
@@ -239,5 +226,6 @@ public:
 extern "C" LocApiAdapter* getLocApiAdapter(LocEng &locEng);
 
 typedef LocApiAdapter* (getLocApiAdapter_t)(LocEng&);
+
 
 #endif //LOC_API_RPC_ADAPTER_H

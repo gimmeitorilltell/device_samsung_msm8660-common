@@ -1,6 +1,13 @@
 ifneq ($(BUILD_TINY_ANDROID),true)
 #Compile this library only for builds with the latest modem image
 
+#BIT_ENABLED_BOARD_PLATFORM_LIST := msm7630_fusion
+#BIT_ENABLED_BOARD_PLATFORM_LIST += msm8660
+#BIT_ENABLED_BOARD_PLATFORM_LIST += msm8960
+#ifeq ($(call is-board-platform-in-list,$(BIT_ENABLED_BOARD_PLATFORM_LIST)),true)
+#FEATURE_GNSS_BIT_API := true
+#endif # is-board-platform-in-list
+
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -21,17 +28,8 @@ LOCAL_SRC_FILES += \
 
 LOCAL_CFLAGS += \
      -fno-short-enums \
-     -D_ANDROID_
-
-LOCAL_CFLAGS += -DFEATURE_IPV6
-
-ifeq ($(FEATURE_DELEXT), true)
-LOCAL_CFLAGS += -DFEATURE_DELEXT
-endif #FEATURE_DELEXT
-
-ifeq ($(FEATURE_ULP), true)
-LOCAL_CFLAGS += -DFEATURE_ULP
-endif #FEATURE_ULP
+     -D_ANDROID_ \
+	 -DNEW_QC_GPS
 
 LOCAL_C_INCLUDES:= \
     $(TARGET_OUT_HEADERS)/gps.utils
@@ -70,7 +68,11 @@ LOCAL_SRC_FILES += \
     loc_eng_xtra.cpp \
     loc_eng_ni.cpp \
     loc_eng_log.cpp \
-    loc_eng_nmea.cpp
+	loc_eng_nmea.cpp
+
+ifeq ($(FEATURE_GNSS_BIT_API), true)
+LOCAL_CFLAGS += -DFEATURE_GNSS_BIT_API
+endif # FEATURE_GNSS_BIT_API
 
 LOCAL_SRC_FILES += \
     loc_eng_dmn_conn.cpp \
@@ -81,17 +83,12 @@ LOCAL_SRC_FILES += \
 
 LOCAL_CFLAGS += \
      -fno-short-enums \
-     -D_ANDROID_
-
-LOCAL_CFLAGS += -DFEATURE_IPV6
-
-ifeq ($(FEATURE_ULP), true)
-LOCAL_CFLAGS += -DFEATURE_ULP
-endif #FEATURE_ULP
+     -D_ANDROID_ \
+	 -DNEW_QC_GPS
 
 LOCAL_C_INCLUDES:= \
     $(TARGET_OUT_HEADERS)/gps.utils \
-    hardware/qcom/gps/loc_api/ulp/inc
+    device/samsung/msm8660-common/gps/ulp/inc
 
 LOCAL_PRELINK_MODULE := false
 
@@ -99,7 +96,7 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := gps.msm8960
+LOCAL_MODULE := gps.msm8660
 
 LOCAL_MODULE_TAGS := optional
 
@@ -119,13 +116,12 @@ LOCAL_SRC_FILES += \
 LOCAL_CFLAGS += \
     -fno-short-enums \
     -D_ANDROID_ \
-
-LOCAL_CFLAGS += -DFEATURE_IPV6
+	-DNEW_QC_GPS
 
 ## Includes
 LOCAL_C_INCLUDES:= \
     $(TARGET_OUT_HEADERS)/gps.utils \
-    hardware/qcom/gps/loc_api/ulp/inc
+    device/samsung/msm8660-common/gps/ulp/inc
 
 LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
