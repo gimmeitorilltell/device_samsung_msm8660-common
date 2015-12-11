@@ -73,8 +73,8 @@
      <bool name="config_enableMultiUserUI">true</bool>
 
     <!-- Performance profiles -->
-    <!--string name="config_perf_profile_prop">sys.perf.profile</string>
-    <string name="config_perf_profile_default_entry">1</string>-->
+    <string name="config_perf_profile_prop">sys.perf.profile</string>
+    <string name="config_perf_profile_default_entry">1</string>
 
     <!-- Expose notification LED configuration in Settings (for BLN) -->
     <bool name="config_intrusiveNotificationLed">true</bool>
