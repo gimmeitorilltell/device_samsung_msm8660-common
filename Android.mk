@@ -46,3 +46,18 @@ ALL_DEFAULT_INSTALLED_MODULES += $(FIRMWARE_MDM_SYMLINKS)
 
 endif
 endif
+
+ifeq ($(RECOVERY_VARIANT), twrp)
+ifeq ($(TARGET_DEVICE), quincyatt)
+ifeq ($(TARGET_DEVICE), skyrocket)
+ifeq ($(TARGET_DEVICE), hercules)
+ifeq ($(TARGET_DEVICE), t769)
+
+LOCAL_PATH := $(call my-dir)
+include $(call first-makefiles-under, $(LOCAL_PATH))
+
+endif
+endif
+endif
+endif
+endif

@@ -17,6 +17,9 @@
 
 TARGET_SPECIFIC_HEADER_PATH := device/samsung/msm8660-common/include
 
+# common kernel source
+TARGET_KERNEL_SOURCE := kernel/samsung/msm8660
+
 # Platform
 TARGET_BOARD_PLATFORM := msm8660
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
@@ -112,7 +115,6 @@ include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += device/samsung/msm8660-common/sepolicy
 
 # TWRP
-DEVICE_RESOLUTION := 480x800
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
@@ -133,7 +135,6 @@ TW_CRYPTO_FS_OPTIONS := "noauto_da_alloc"
 TW_CRYPTO_FS_FLAGS := "0x00000006"
 TW_CRYPTO_KEY_LOC := "/efs/metadata"
 TW_MAX_BRIGHTNESS := 255
-TW_THEME := portrait_mdpi
 
 # Wifi related defines
 BOARD_HAVE_SAMSUNG_WIFI := true
