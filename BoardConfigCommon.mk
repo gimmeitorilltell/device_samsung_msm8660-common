@@ -16,6 +16,7 @@
 -include device/samsung/qcom-common/BoardConfigCommon.mk
 
 TARGET_SPECIFIC_HEADER_PATH := device/samsung/msm8660-common/include
+TARGET_KERNEL_SOURCE := kernel/samsung/msm8660-common
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8660
