@@ -1,4 +1,0 @@
-allow untrusted_app sysfs_bln:dir search;
-allow untrusted_app sysfs_bln:file rw_file_perms;
-allow untrusted_app sysfs_bln:lnk_file read;
-allow untrusted_app apk_data_file:dir getattr;
