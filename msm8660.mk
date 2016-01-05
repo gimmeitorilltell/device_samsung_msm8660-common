@@ -85,8 +85,9 @@ PRODUCT_PACKAGES += \
     lpm.rc \
     ueventd.qcom.rc
 
-# Recovery-Ramdisk
+# TWRP Recovery
 PRODUCT_PACKAGES += \
+    postrecoveryboot.sh \
     twrp.fstab
 
 # Audio
@@ -114,6 +115,13 @@ PRODUCT_PACKAGES += \
     hwcomposer.msm8660 \
     libgenlock \
     memtrack.msm8660
+
+# Filesystem management tools
+PRODUCT_PACKAGES += \
+    mkfs.f2fs \
+    fsck.f2fs \
+    fibmap.f2fs \
+    resize2fs_static
 
 # GalaxyS2Settings
 PRODUCT_PACKAGES += \
