@@ -78,14 +78,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.efs.sync.sh \
+    init.qcom.mdm_links.sh \
+    init.qcom.modem_links.sh \
     init.qcom.rc \
-    init.qcom.power.rc \
+    init.qcom.syspart_fixup.sh \
+    lpm.rc \
     ueventd.qcom.rc
-
-# TWRP Recovery
-PRODUCT_PACKAGES += \
-    postrecoveryboot.sh \
-    twrp.fstab
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -112,13 +110,6 @@ PRODUCT_PACKAGES += \
     hwcomposer.msm8660 \
     libgenlock \
     memtrack.msm8660
-
-# Filesystem management tools
-PRODUCT_PACKAGES += \
-    mkfs.f2fs \
-    fsck.f2fs \
-    fibmap.f2fs \
-    resize2fs_static
 
 # GalaxyS2Settings
 PRODUCT_PACKAGES += \
@@ -186,6 +177,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_BOOT_JARS += \
     qcmediaplayer
 
+# Package generation
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/test_radio_version.sh:/system/etc/test_radio_version.sh
+
 # Power HAL
 PRODUCT_PACKAGES += \
     power.msm8660
@@ -208,9 +203,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 
+# TWRP
+PRODUCT_COPY_FILES += \
+    device/samsung/msm8660-common/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab 
+
 # Hardware bypass
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.hwc.mdpcomp.enable=false
 
 # Common Qualcomm hardware
-    $(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
+$(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
