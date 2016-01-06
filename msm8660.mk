@@ -78,11 +78,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.efs.sync.sh \
-    init.qcom.mdm_links.sh \
-    init.qcom.modem_links.sh \
     init.qcom.rc \
-    init.qcom.syspart_fixup.sh \
-    lpm.rc \
+    init.qcom.power.rc \
     ueventd.qcom.rc
 
 # TWRP Recovery
@@ -188,10 +185,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_BOOT_JARS += \
     qcmediaplayer
-
-# Package generation
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/test_radio_version.sh:/system/etc/test_radio_version.sh
 
 # Power HAL
 PRODUCT_PACKAGES += \
