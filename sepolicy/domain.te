@@ -1,2 +1,0 @@
-allow domain log_device:dir search;
-allow domain log_device:chr_file rw_file_perms;

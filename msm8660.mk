@@ -21,6 +21,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+    frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
@@ -42,13 +43,15 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0
 
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
 
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.mdpcomp.maxlayer=3 \
     debug.hwc.dynThreshold=1.9 \
-    persist.hwc.mdpcomp.enable=false \
     ro.opengles.version=131072
 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -71,34 +74,27 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungMSM8660RIL
 
-# ART
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.dex2oat-flags=--no-watch-dog \
-    dalvik.vm.dex2oat-swap=false \
-    ro.sys.fw.dex2oat_thread_count=4
-
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.efs.sync.sh \
+    init.qcom.mdm_links.sh \
+    init.qcom.modem_links.sh \
     init.qcom.rc \
-    init.qcom.power.rc \
+    init.qcom.syspart_fixup.sh \
+    lpm.rc \
     ueventd.qcom.rc
 
-# TWRP Recovery
+# Recovery-Ramdisk
 PRODUCT_PACKAGES += \
-    postrecoveryboot.sh \
     twrp.fstab
-
-# Audio config
-PRODUCT_COPY_FILES += \
-    device/samsung/msm8660-common/configs/audio_policy.conf:system/etc/audio_policy.conf
 
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.usb.default \
-    audio.r_submix.default \
+    audio_policy.conf \
+    audio_policy.msm8660 \
     audio.primary.msm8660 \
     libaudio-resampler \
     libaudioutils
@@ -111,10 +107,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.enable.chromecast.mirror=true
 
-# Compatibility symbols wrappers
-PRODUCT_PACKAGES += \
-    libsamsung_symbols
-
 # Display
 PRODUCT_PACKAGES += \
     copybit.msm8660 \
@@ -123,12 +115,10 @@ PRODUCT_PACKAGES += \
     libgenlock \
     memtrack.msm8660
 
-# Filesystem management tools
+# GalaxyS2Settings
 PRODUCT_PACKAGES += \
-    mkfs.f2fs \
-    fsck.f2fs \
-    fibmap.f2fs \
-    resize2fs_static
+    GalaxyS2Settings \
+    SamsungServiceMode
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -178,22 +168,26 @@ PRODUCT_COPY_FILES += \
 
 # OMX
 PRODUCT_PACKAGES += \
-    libOmxCore \
+    libdashplayer \
     libOmxVdec \
     libOmxVenc \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxEvrcEnc \
     libOmxQcelp13Enc \
-    libstagefrighthw
+    libstagefrighthw \
+    qcmediaplayer
 
-# Power
+PRODUCT_BOOT_JARS += \
+    qcmediaplayer
+
+# Power HAL
 PRODUCT_PACKAGES += \
     power.msm8660
 
-# Stlport
+# USB
 PRODUCT_PACKAGES += \
-    libstlport
+    com.android.future.usb.accessory
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -209,5 +203,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 
+#HW Hack
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.hwc.mdpcomp.enable=false
+
 # Common Qualcomm hardware
-$(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
+    $(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
