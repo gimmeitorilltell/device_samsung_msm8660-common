@@ -3,7 +3,7 @@ type_transition mdm_helper system_data_file:{ file } efs_data_file;
 
 allow mdm_helper mdm_device:file rw_file_perms;
 allow mdm_helper mdm_device:chr_file rw_file_perms;
-allow mdm_helper modem_efs_partition_device:blk_file rw_file_perms;
+allow mdm_helper mmc_block_device:blk_file rw_file_perms;
 allow mdm_helper qmux_device:chr_file rw_file_perms;
 allow mdm_helper self:capability { dac_read_search dac_override };
 allow mdm_helper self:process execmem;

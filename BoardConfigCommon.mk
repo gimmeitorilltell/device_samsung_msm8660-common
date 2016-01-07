@@ -16,7 +16,7 @@
 -include device/samsung/qcom-common/BoardConfigCommon.mk
 
 # common kernel source
-TARGET_KERNEL_SOURCE := kernel/samsung/msm8660-common
+TARGET_KERNEL_SOURCE := kernel/samsung/msm8660
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8660
@@ -43,24 +43,20 @@ BOARD_BLUEDROID_VENDOR_CONF := device/samsung/msm8660-common/bluetooth/vnd_msm86
 BOARD_CAMERA_USE_MM_HEAP := true
 COMMON_GLOBAL_CFLAGS += -DQCOM_BSP_CAMERA_ABI_HACK
 COMMON_GLOBAL_CFLAGS += -DSAMSUNG_CAMERA_HARDWARE
+TARGET_RELEASE_CPPFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
 # Charger
 BOARD_BATTERY_DEVICE_NAME := "battery"
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
 
 # Display
+BOARD_EGL_CFG := device/samsung/msm8660-common/configs/egl.cfg
 BOARD_USES_LEGACY_MMAP := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_DISPLAY_INSECURE_MM_HEAP := true
 TARGET_DISPLAY_USE_RETIRE_FENCE := true
 TARGET_NO_ADAPTIVE_PLAYBACK := true
 TARGET_NO_INITLOGO := true
-
-# External apps on SD
-TARGET_EXTERNAL_APPS = sdcard1
-
-# FM
-QCOM_FM_ENABLED := false
 
 # GPS
 BOARD_HAVE_NEW_QC_GPS := true
@@ -80,14 +76,11 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 TARGET_NO_ADAPTIVE_PLAYBACK := true
 
 # Power
-TARGET_POWERHAL_VARIANT := qcom
+TARGET_POWERHAL_VARIANT := cm
 
 # Qualcomm support
 COMMON_GLOBAL_CFLAGS += -DQCOM_BSP
 TARGET_USES_QCOM_BSP := true
-
-# Radio
-COMMON_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/samsung/msm8660-common/rootdir/etc/fstab.qcom
@@ -95,13 +88,44 @@ TARGET_RECOVERY_DEVICE_DIRS := device/samsung/msm8660-common
 
 # RIL
 BOARD_RIL_CLASS := ../../../device/samsung/msm8660-common/ril
-BOARD_PROVIDES_LIBRIL := true
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 
 BOARD_SEPOLICY_DIRS += \
     device/samsung/msm8660-common/sepolicy
+
+BOARD_SEPOLICY_UNION += \
+    bluetooth.te \
+    device.te \
+    file.te \
+    file_contexts \
+    gamma_dev.te \
+    healthd.te \
+    init.te \
+    init_shell.te \
+    kernel.te \
+    keypad_dev.te \
+    mdm_helper.te \
+    mediaserver.te \
+    mpdecision.te \
+    netmgrd.te \
+    panel_dev.te \
+    power_dev.te \
+    qmuxd.te \
+    qseecomd.te \
+    radio.te \
+    rild.te \
+    rmt_storage.te \
+    secril-daemon.te \
+    surfaceflinger.te \
+    sysinit.te \
+    system_app.te \
+    system_server.te \
+    thermal-engine.te \
+    ueventd.te \
+    vold.te \
+    wpa.te
 
 # Wifi related defines
 BOARD_HAVE_SAMSUNG_WIFI := true
@@ -124,40 +148,17 @@ WIFI_DRIVER_MODULE_AP_ARG   := "firmware_path=/system/etc/wifi/bcmdhd_apsta.bin 
 
 # Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-BOARD_VOLD_MAX_PARTITIONS := 28
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
-
-# ROM Optimization
-BONE_STOCK := false
-NO_DEBUG_FRAME_POINTERS := true
-NO_DEBUG_SYMBOL_FLAGS := true
-MAXIMUM_OVERDRIVE := true
-USE_GRAPHITE := true
-USE_FSTRICT_FLAGS := true
-USE_BINARY_FLAGS := true
-USE_EXTRA_CLANG_FLAGS := true
-ADDITIONAL_TARGET_ARM_OPT := true
-ADDITIONAL_TARGET_THUMB_OPT := true
-CANDY_ARM_OPT_LEVEL := -O3
-CANDY_THUMB_OPT_LEVEL := -O3
-FSTRICT_ALIASING_WARNING_LEVEL := 3
-USE_LTO := true
 
 # TWRP
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
 TW_MAX_BRIGHTNESS := 255
-TW_CUSTOM_CPU_TEMP_PATH := /sys/kernel/msm_thermal/conf/temp
+TW_NO_CPU_TEMP := true
 TW_INTERNAL_STORAGE_PATH := "/sdcard"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_EXTERNAL_STORAGE_PATH := "/external_sdcard"
 TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sdcard"
 BOARD_HAS_NO_REAL_SDCARD := true
 TW_INCLUDE_CRYPTO := true
-TW_CRYPTO_FS_TYPE := "ext4"
-TW_CRYPTO_REAL_BLKDEV := "/dev/block/mmcblk0p25"
-TW_CRYPTO_MNT_POINT := "/data"
-TW_CRYPTO_FS_OPTIONS := "noauto_da_alloc"
-TW_CRYPTO_FS_FLAGS := "0x00000006"
-TW_CRYPTO_KEY_LOC := "/efs/metadata"

@@ -43,6 +43,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0
 
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
 
@@ -75,8 +78,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.efs.sync.sh \
+    init.qcom.mdm_links.sh \
+    init.qcom.modem_links.sh \
     init.qcom.rc \
-    init.qcom.power.rc \
+    init.qcom.syspart_fixup.sh \
+    lpm.rc \
     ueventd.qcom.rc
 
 # Recovery-Ramdisk
@@ -100,10 +106,6 @@ PRODUCT_PACKAGES += \
 # Chromecast
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.enable.chromecast.mirror=true
-
-# Compatibility symbols wrappers
-PRODUCT_PACKAGES += \
-    libsamsung_symbols
 
 # Display
 PRODUCT_PACKAGES += \
@@ -146,7 +148,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
+    frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/etc/media_codecs_google_video_le.xml
 
 # NFC
 PRODUCT_PACKAGES += \
@@ -187,10 +189,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     power.msm8660
 
-# Stlport
-PRODUCT_PACKAGES += \
-    libstlport
-
 # USB
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
@@ -209,13 +207,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 
-# Doze
-PRODUCT_PACKAGES += \
-    SamsungDoze
-
 #HW Hack
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.hwc.mdpcomp.enable=false
 
 # Common Qualcomm hardware
-$(call inherit-product, device/samsung/qcom-common/qcom-common.mk)
+    $(call inherit-product, device/samsung/qcom-common/qcom-common.mk)

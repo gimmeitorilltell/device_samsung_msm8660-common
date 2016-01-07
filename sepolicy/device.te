@@ -1,6 +1,8 @@
 type mdm_device, dev_type;
+type msm_acdb_device, dev_type;
 type keypad_dev, dev_type;
 type oncrpc_device, dev_type;
 type panel_dev, dev_type;
 type power_dev, dev_type;
 type rfkill_device, dev_type;
+type timerirq_dev, dev_type;
