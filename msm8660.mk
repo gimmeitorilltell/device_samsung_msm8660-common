@@ -85,11 +85,6 @@ PRODUCT_PACKAGES += \
     init.qcom.power.rc \
     ueventd.qcom.rc
 
-# TWRP Recovery
-PRODUCT_PACKAGES += \
-    postrecoveryboot.sh \
-    twrp.fstab
-
 # Audio config
 PRODUCT_COPY_FILES += \
     device/samsung/msm8660-common/configs/audio_policy.conf:system/etc/audio_policy.conf
