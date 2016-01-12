@@ -53,13 +53,13 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charg
 BOARD_HARDWARE_CLASS += device/samsung/msm8660-common/cmhw
 
 # Dex-preoptimization
-ifeq ($(HOST_OS),linux)
-  ifeq ($(WITH_DEXPREOPT),)
-    WITH_DEXPREOPT := true
-    WITH_DEXPREOPT_COMP := false
-  endif
-endif
-DONT_DEXPREOPT_PREBUILTS := true
+#ifeq ($(HOST_OS),linux)
+#  ifeq ($(WITH_DEXPREOPT),)
+#    WITH_DEXPREOPT := true
+#    WITH_DEXPREOPT_COMP := false
+#  endif
+#endif
+#DONT_DEXPREOPT_PREBUILTS := true
 
 # Display
 BOARD_USES_LEGACY_MMAP := true
