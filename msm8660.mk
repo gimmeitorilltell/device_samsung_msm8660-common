@@ -21,7 +21,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-    frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
@@ -49,6 +48,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.mdpcomp.maxlayer=3 \
     debug.hwc.dynThreshold=1.9 \
+    persist.hwc.mdpcomp.enable=false \
     ro.opengles.version=131072
 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -71,6 +71,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungMSM8660RIL
 
+# ART
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-flags=--no-watch-dog \
+    dalvik.vm.dex2oat-swap=false \
+    dalvik.vm.image-dex2oat-filter=speed \
+    ro.sys.fw.dex2oat_thread_count=4
+
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.qcom \
@@ -79,16 +86,15 @@ PRODUCT_PACKAGES += \
     init.qcom.power.rc \
     ueventd.qcom.rc
 
-# Recovery-Ramdisk
-PRODUCT_PACKAGES += \
-    twrp.fstab
+# Audio config
+PRODUCT_COPY_FILES += \
+    device/samsung/msm8660-common/configs/audio_policy.conf:system/etc/audio_policy.conf
 
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.usb.default \
-    audio_policy.conf \
-    audio_policy.msm8660 \
+    audio.r_submix.default \
     audio.primary.msm8660 \
     libaudio-resampler \
     libaudioutils
@@ -120,10 +126,10 @@ PRODUCT_PACKAGES += \
     libgenlock \
     memtrack.msm8660
 
-# GalaxyS2Settings
+# Filesystem management tools
 PRODUCT_PACKAGES += \
-    GalaxyS2Settings \
-    SamsungServiceMode
+    fsck.f2fs \
+    resize2fs_static
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -153,7 +159,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
+    frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/etc/media_codecs_google_video_le.xml
+
+# MSM8660Settings
+PRODUCT_PACKAGES += \
+    MSM8660Settings
 
 # NFC
 PRODUCT_PACKAGES += \
@@ -173,34 +183,22 @@ PRODUCT_COPY_FILES += \
 
 # OMX
 PRODUCT_PACKAGES += \
-    libdashplayer \
+    libOmxCore \
     libOmxVdec \
     libOmxVenc \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxEvrcEnc \
     libOmxQcelp13Enc \
-    libstagefrighthw \
-    qcmediaplayer
+    libstagefrighthw
 
-PRODUCT_BOOT_JARS += \
-    qcmediaplayer
-
-# Package generation
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/test_radio_version.sh:/system/etc/test_radio_version.sh
-
-# Power HAL
+# Power
 PRODUCT_PACKAGES += \
     power.msm8660
 
 # Stlport
 PRODUCT_PACKAGES += \
     libstlport
-
-# USB
-PRODUCT_PACKAGES += \
-    com.android.future.usb.accessory
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -215,14 +213,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
-
-# Doze
-PRODUCT_PACKAGES += \
-    SamsungDoze
-
-#HW Hack
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.hwc.mdpcomp.enable=false
 
 # Common Qualcomm hardware
 $(call inherit-product, device/samsung/qcom-common/qcom-common.mk)

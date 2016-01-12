@@ -1,4 +1,4 @@
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2012 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ TARGET_KERNEL_SOURCE := kernel/samsung/msm8660-common
 # Platform
 TARGET_BOARD_PLATFORM := msm8660
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
+TARGET_BUILD_VARIANT := userdebug
+USE_CLANG_PLATFORM_BUILD := true
 
 # Architecture
 TARGET_CPU_VARIANT := scorpion
@@ -28,11 +30,10 @@ TARGET_CPU_VARIANT := scorpion
 # Audio
 BOARD_HAVE_SAMSUNG_AUDIO := true
 BOARD_USES_LEGACY_ALSA_AUDIO := true
-BOARD_QCOM_TUNNEL_LPA_ENABLED := true
-BOARD_QCOM_VOIP_ENABLED := true
 AUDIO_FEATURE_ENABLED_COMPRESS_VOIP := false
 AUDIO_FEATURE_ENABLED_INCALL_MUSIC := false
 AUDIO_FEATURE_ENABLED_PROXY_DEVICE := false
+COMMON_GLOBAL_CFLAGS += -DLEGACY_QCOM_VOICE
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -48,6 +49,9 @@ COMMON_GLOBAL_CFLAGS += -DSAMSUNG_CAMERA_HARDWARE
 BOARD_BATTERY_DEVICE_NAME := "battery"
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
 
+# CMHW
+BOARD_HARDWARE_CLASS += device/samsung/msm8660-common/cmhw
+
 # Dex-preoptimization
 ifeq ($(HOST_OS),linux)
   ifeq ($(WITH_DEXPREOPT),)
@@ -60,17 +64,23 @@ DONT_DEXPREOPT_PREBUILTS := true
 # Display
 BOARD_USES_LEGACY_MMAP := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_DISPLAY_INSECURE_MM_HEAP := true
 TARGET_DISPLAY_USE_RETIRE_FENCE := true
-TARGET_NO_ADAPTIVE_PLAYBACK := true
 TARGET_NO_INITLOGO := true
+
+# Dlmalloc
+MALLOC_IMPL := dlmalloc
+
+# Fonts
+EXTENDED_FONT_FOOTPRINT := true
 
 # GPS
 BOARD_HAVE_NEW_QC_GPS := true
 TARGET_GPS_HAL_PATH := device/samsung/msm8660-common/gps
 
 # Includes
-TARGET_SPECIFIC_HEADER_PATH += device/samsung/msm8660-common/include
+ -TARGET_SPECIFIC_HEADER_PATH += device/samsung/msm8660-common/include
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
@@ -79,19 +89,12 @@ TARGET_PROVIDES_LIBLIGHT := true
 TARGET_USES_LOGD := false
 
 # Media
-TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 TARGET_NO_ADAPTIVE_PLAYBACK := true
 
-# Qualcomm support
-COMMON_GLOBAL_CFLAGS += -DQCOM_BSP
-TARGET_USES_QCOM_BSP := true
-
-# Radio
-COMMON_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
-
 # Recovery
-TARGET_RECOVERY_FSTAB := device/samsung/msm8660-common/rootdir/etc/fstab.qcom
 TARGET_RECOVERY_DEVICE_DIRS := device/samsung/msm8660-common
+TARGET_RECOVERY_FSTAB := device/samsung/msm8660-common/rootdir/etc/fstab.qcom
+TARGET_USERIMAGES_USE_F2FS := true
 
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/msm8660-common
@@ -102,13 +105,10 @@ BOARD_PROVIDES_LIBRIL := true
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
-
-BOARD_SEPOLICY_DIRS += \
-    device/samsung/msm8660-common/sepolicy
+BOARD_SEPOLICY_DIRS += device/samsung/msm8660-common/sepolicy
 
 # Wifi related defines
 BOARD_HAVE_SAMSUNG_WIFI := true
-BOARD_NO_WIFI_HAL := true
 BOARD_WLAN_DEVICE := bcmdhd
 BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_${BOARD_WLAN_DEVICE}
@@ -127,5 +127,4 @@ WIFI_DRIVER_MODULE_AP_ARG   := "firmware_path=/system/etc/wifi/bcmdhd_apsta.bin 
 
 # Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-BOARD_VOLD_MAX_PARTITIONS := 28
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
