@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012-2013 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="bln_timeout_entries">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="bln_timeout_entries_values" translatable="false">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>0</item>
+    </string-array>
+    <string-array name="dt2w_entries">
+        <item>Disabled</item>
+        <item>Menu</item>
+        <item>Home</item>
+        <item>Back</item>
+        <item>Search</item>
+    </string-array>
+    <string-array name="dt2w_entries_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="dt2s_entries">
+        <item>Disabled</item>
+        <item>Menu</item>
+        <item>Home</item>
+        <item>Back</item>
+        <item>Search</item>
+    </string-array>
+    <string-array name="dt2s_entries_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="paneluv_entries">
+        <item>No UV</item>
+        <item>50mV UV</item>
+        <item>100mV UV</item>
+        <item>150mV UV</item>
+        <item>200mV UV</item>
+        <item>250mV UV</item>
+        <item>300mV UV</item>
+        <item>350mV UV</item>
+        <item>400mV UV</item>
+        <item>450mV UV</item>
+        <item>500mV UV</item>
+    </string-array>
+    <string-array name="paneluv_entries_values" translatable="false">
+        <item>0</item>
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+        <item>500</item>
+    </string-array>
+</resources>

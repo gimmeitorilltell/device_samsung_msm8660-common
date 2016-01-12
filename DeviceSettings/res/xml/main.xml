@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+     Copyright (C) 2012 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory
+    	android:title="@string/category_touchkey_title">
+	    <!-- Sweep2Wake -->
+	    <CheckBoxPreference
+	        android:key="s2w"
+	        android:title="@string/s2w_title_head"
+	        android:summary="@string/s2w_summary_head" />
+	    <!-- DoubleTap2Wake -->
+	    <ListPreference
+	        android:key="dt2w"
+	        android:title="@string/dt2w_title_head"
+	        android:summary="@string/dt2w_summary_head"
+	        android:entries="@array/dt2w_entries"
+	        android:entryValues="@array/dt2w_entries_values"
+	        android:defaultValue="0" />
+	    <!-- DoubleTap2Sleep -->
+	    <ListPreference
+	        android:key="dt2s"
+	        android:title="@string/dt2s_title_head"
+	        android:summary="@string/dt2s_summary_head"
+	        android:entries="@array/dt2s_entries"
+	        android:entryValues="@array/dt2s_entries_values"
+	        android:defaultValue="0" />
+	    <!-- BLN Timeout -->
+	    <ListPreference
+	        android:key="bln_timeout"
+	        android:title="@string/bln_timeout_title_head"
+	        android:summary="@string/bln_timeout_summary_head"
+	        android:entries="@array/bln_timeout_entries"
+	        android:entryValues="@array/bln_timeout_entries_values"
+	        android:defaultValue="600000" />
+	</PreferenceCategory>
+
+	<PreferenceCategory
+    	android:title="@string/category_display_title">
+	    <!-- Panel UV -->
+	    <ListPreference
+	        android:key="panel_uv"
+	        android:title="@string/paneluv_title_head"
+	        android:summary="@string/paneluv_summary_head"
+	        android:entries="@array/paneluv_entries"
+	        android:entryValues="@array/paneluv_entries_values"
+	        android:defaultValue="0" />
+	</PreferenceCategory>
+
+	<PreferenceCategory
+    	android:title="@string/category_misc_title">
+	    <!-- Low Power Flash -->
+	    <CheckBoxPreference
+	        android:key="lp_flash"
+	        android:title="@string/lp_flash_title_head"
+	        android:summary="@string/lp_flash_summary_head" />
+	</PreferenceCategory>
+
+</PreferenceScreen>
