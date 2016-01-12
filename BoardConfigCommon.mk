@@ -21,7 +21,7 @@ TARGET_KERNEL_SOURCE := kernel/samsung/msm8660-common
 # Platform
 TARGET_BOARD_PLATFORM := msm8660
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
-TARGET_BUILD_VARIANT := userdebug
+TARGET_BUILD_VARIANT := eng
 USE_CLANG_PLATFORM_BUILD := true
 
 # Architecture
