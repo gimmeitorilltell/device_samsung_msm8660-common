@@ -101,7 +101,6 @@ TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/msm8660-common
 
 # RIL
 BOARD_RIL_CLASS := ../../../device/samsung/msm8660-common/ril
-BOARD_PROVIDES_LIBRIL := true
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
