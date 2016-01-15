@@ -51,14 +51,8 @@ BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charg
 # CMHW
 BOARD_HARDWARE_CLASS += device/samsung/msm8660-common/cmhw
 
-# Dex-preoptimization
-ifeq ($(HOST_OS),linux)
-  ifeq ($(WITH_DEXPREOPT),)
-    WITH_DEXPREOPT := true
-    WITH_DEXPREOPT_COMP := false
-  endif
-endif
-DONT_DEXPREOPT_PREBUILTS := true
+# common kernel source
+TARGET_KERNEL_SOURCE := kernel/samsung/msm8660-common
 
 # Display
 BOARD_USES_LEGACY_MMAP := true
@@ -99,9 +93,6 @@ TARGET_USES_QCOM_BSP := true
 TARGET_RECOVERY_DEVICE_DIRS := device/samsung/msm8660-common
 TARGET_RECOVERY_FSTAB := device/samsung/msm8660-common/rootdir/etc/fstab.qcom
 TARGET_USERIMAGES_USE_F2FS := true
-
-# Releasetools
-TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/msm8660-common
 
 # RIL
 BOARD_RIL_CLASS := ../../../device/samsung/msm8660-common/ril
