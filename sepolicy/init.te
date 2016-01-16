@@ -1,4 +1,12 @@
-allow init keypad_dev:file { getattr relabelto };
-allow init labeledfs:filesystem associate;
+allow init keypad_dev:file { getattr relabelto setattr };
 allow init keypad_dev:filesystem associate;
+allow init labeledfs:filesystem associate;
+allow init mdm_device:chr_file { getattr };
+allow init panel_dev:file { relabelto setattr };
+allow init power_dev:file { relabelto setattr };
 allow init self:process execmem;
+allow init ashmem_device:chr_file execute;
+allow init rootfs:file { rename write create setattr };
+allow init vfat:dir { write setattr read remove_name create open add_name };
+allow init vfat:file { write getattr read create unlink open };
+
